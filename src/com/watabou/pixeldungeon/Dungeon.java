@@ -43,21 +43,8 @@ import com.watabou.pixeldungeon.items.potions.Potion;
 import com.watabou.pixeldungeon.items.rings.Ring;
 import com.watabou.pixeldungeon.items.scrolls.Scroll;
 import com.watabou.pixeldungeon.items.wands.Wand;
-import com.watabou.pixeldungeon.levels.CavesBossLevel;
-import com.watabou.pixeldungeon.levels.CavesLevel;
-import com.watabou.pixeldungeon.levels.CityBossLevel;
-import com.watabou.pixeldungeon.levels.CityLevel;
-import com.watabou.pixeldungeon.levels.DeadEndLevel;
-import com.watabou.pixeldungeon.levels.HallsBossLevel;
-import com.watabou.pixeldungeon.levels.HallsLevel;
-import com.watabou.pixeldungeon.levels.LastLevel;
-import com.watabou.pixeldungeon.levels.LastShopLevel;
 import com.watabou.pixeldungeon.levels.Level;
-import com.watabou.pixeldungeon.levels.PrisonBossLevel;
-import com.watabou.pixeldungeon.levels.PrisonLevel;
 import com.watabou.pixeldungeon.levels.Room;
-import com.watabou.pixeldungeon.levels.SewerBossLevel;
-import com.watabou.pixeldungeon.levels.SewerLevel;
 import com.watabou.pixeldungeon.scenes.GameScene;
 import com.watabou.pixeldungeon.scenes.StartScene;
 import com.watabou.pixeldungeon.ui.QuickSlot;
@@ -163,64 +150,12 @@ public class Dungeon {
 		}
 		
 		Arrays.fill( visible, false );
-		
-		Level level;
-		switch (depth) {
-		case 1:
-		case 2:
-		case 3:
-		case 4:
-			level = new SewerLevel();
-			break;
-		case 5:
-			level = new SewerBossLevel();
-			break;
-		case 6:
-		case 7:
-		case 8:
-		case 9:
-			level = new PrisonLevel();
-			break;
-		case 10:
-			level = new PrisonBossLevel();
-			break;
-		case 11:
-		case 12:
-		case 13:
-		case 14:
-			level = new CavesLevel();
-			break;
-		case 15:
-			level = new CavesBossLevel();
-			break;
-		case 16:
-		case 17:
-		case 18:
-		case 19:
-			level = new CityLevel();
-			break;
-		case 20:
-			level = new CityBossLevel();
-			break;
-		case 21:
-			level = new LastShopLevel();
-			break;
-		case 22:
-		case 23:
-		case 24:
-			level = new HallsLevel();
-			break;
-		case 25:
-			level = new HallsBossLevel();
-			break;
-		case 26:
-			level = new LastLevel();
-			break;
-		default:
-			level = new DeadEndLevel();
+
+		Level level = Zones.levelForDepth( depth );
+		if (Zones.isOutOfRange( depth )) {
 			Statistics.deepestFloor--;
 		}
-		
+
 		level.create();
 		
 		Statistics.qualifiedForNoKilling = !bossLevel();
@@ -239,15 +174,15 @@ public class Dungeon {
 	}
 	
 	public static boolean shopOnLevel() {
-		return depth == 6 || depth == 11 || depth == 16;
+		return Zones.hasShop( depth );
 	}
-	
+
 	public static boolean bossLevel() {
-		return bossLevel( depth );
+		return Zones.isBoss( depth );
 	}
-	
+
 	public static boolean bossLevel( int depth ) {
-		return depth == 5 || depth == 10 || depth == 15 || depth == 20 || depth == 25;
+		return Zones.isBoss( depth );
 	}
 	
 	@SuppressWarnings("deprecation")
