@@ -22,9 +22,10 @@ import com.watabou.pixeldungeon.levels.CavesLevel;
 import com.watabou.pixeldungeon.levels.CityBossLevel;
 import com.watabou.pixeldungeon.levels.CityLevel;
 import com.watabou.pixeldungeon.levels.DeadEndLevel;
+import com.watabou.pixeldungeon.levels.ForgeBossLevel;
+import com.watabou.pixeldungeon.levels.ForgeLevel;
 import com.watabou.pixeldungeon.levels.HallsBossLevel;
 import com.watabou.pixeldungeon.levels.HallsLevel;
-import com.watabou.pixeldungeon.levels.LastLevel;
 import com.watabou.pixeldungeon.levels.LastShopLevel;
 import com.watabou.pixeldungeon.levels.Level;
 import com.watabou.pixeldungeon.levels.PrisonBossLevel;
@@ -36,17 +37,24 @@ import com.watabou.pixeldungeon.levels.SewerLevel;
  * Central registry of dungeon zones and the depth-to-level dispatcher.
  *
  * Every numbered floor depth resolves through {@link #levelForDepth(int)}.
- * The dispatcher first checks for utility floors (currently the LastShop at
- * depth 21 and the LastLevel at depth 26), then walks the zone table.
+ * The dispatcher first handles the utility LastShop at depth 21, then walks
+ * the zone table.
  *
- * Out-of-range depths produce a {@link DeadEndLevel}.
+ * Out-of-range depths (below 1 or beyond every registered zone) produce a
+ * {@link DeadEndLevel}.
+ *
+ * Note (M2): the original LastLevel at depth 26 has been removed from the
+ * dispatcher to make room for the Forge zone (26-30). The
+ * {@code com.watabou.pixeldungeon.levels.LastLevel} class and the
+ * {@code com.watabou.pixeldungeon.items.Amulet} item still exist but are no
+ * longer reachable through normal play; the amulet-as-Act-II-trigger
+ * rework belongs to a follow-up milestone.
  */
 public final class Zones {
 
 	private Zones() {}
 
 	public static final int LAST_SHOP_DEPTH = 21;
-	public static final int LAST_LEVEL_DEPTH = 26;
 
 	private static final Zone SEWERS = new Zone(
 			"sewers", Act.ONE, 1, 5, 5, false ) {
@@ -83,7 +91,14 @@ public final class Zones {
 		}
 	};
 
-	private static final Zone[] ALL = { SEWERS, PRISON, CAVES, CITY, HALLS };
+	private static final Zone FORGE = new Zone(
+			"forge", Act.TWO, 26, 30, 30, false ) {
+		@Override public Level createLevel( int depth ) {
+			return isBossDepth( depth ) ? new ForgeBossLevel() : new ForgeLevel();
+		}
+	};
+
+	private static final Zone[] ALL = { SEWERS, PRISON, CAVES, CITY, HALLS, FORGE };
 
 	public static Zone forDepth( int depth ) {
 		for (Zone z : ALL) {
@@ -95,20 +110,19 @@ public final class Zones {
 	}
 
 	public static boolean isOutOfRange( int depth ) {
-		return depth < 1 || depth > LAST_LEVEL_DEPTH;
+		if (depth < 1) {
+			return true;
+		}
+		if (depth == LAST_SHOP_DEPTH) {
+			return false;
+		}
+		return forDepth( depth ) == null;
 	}
 
 	public static Level levelForDepth( int depth ) {
 		if (depth == LAST_SHOP_DEPTH) {
 			return new LastShopLevel();
 		}
-		if (depth == LAST_LEVEL_DEPTH) {
-			return new LastLevel();
-		}
-		if (isOutOfRange( depth )) {
-			return new DeadEndLevel();
-		}
-
 		Zone z = forDepth( depth );
 		if (z == null) {
 			return new DeadEndLevel();
