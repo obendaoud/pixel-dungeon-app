@@ -194,6 +194,94 @@ public class Bestiary {
 			classes = new Class<?>[]{ FurnaceKing.class };
 			break;
 
+		// --- Crypt zone (Act II, depths 31-35) ---
+		case 31:
+			chances = new float[]{ 2, 1 };
+			classes = new Class<?>[]{ GhoulRaiser.class, CursedBat.class };
+			break;
+		case 32:
+			chances = new float[]{ 2, 2 };
+			classes = new Class<?>[]{ GhoulRaiser.class, CursedBat.class };
+			break;
+		case 33:
+			chances = new float[]{ 1, 2 };
+			classes = new Class<?>[]{ GhoulRaiser.class, CursedBat.class };
+			break;
+		case 34:
+			chances = new float[]{ 1, 3 };
+			classes = new Class<?>[]{ GhoulRaiser.class, CursedBat.class };
+			break;
+		case 35:
+			chances = new float[]{ 1 };
+			classes = new Class<?>[]{ TheLich.class };
+			break;
+
+		// --- Library zone (Act II, depths 36-40) ---
+		case 36:
+			chances = new float[]{ 2, 1 };
+			classes = new Class<?>[]{ PaperGolem.class, InkSpinner.class };
+			break;
+		case 37:
+			chances = new float[]{ 2, 2 };
+			classes = new Class<?>[]{ PaperGolem.class, InkSpinner.class };
+			break;
+		case 38:
+			chances = new float[]{ 1, 2 };
+			classes = new Class<?>[]{ PaperGolem.class, InkSpinner.class };
+			break;
+		case 39:
+			chances = new float[]{ 1, 3 };
+			classes = new Class<?>[]{ PaperGolem.class, InkSpinner.class };
+			break;
+		case 40:
+			chances = new float[]{ 1 };
+			classes = new Class<?>[]{ WhisperingTome.class };
+			break;
+
+		// --- Garden zone (Act II, depths 41-45) ---
+		case 41:
+			chances = new float[]{ 2, 1 };
+			classes = new Class<?>[]{ RotShaman.class, SporeSwarm.class };
+			break;
+		case 42:
+			chances = new float[]{ 2, 2 };
+			classes = new Class<?>[]{ RotShaman.class, SporeSwarm.class };
+			break;
+		case 43:
+			chances = new float[]{ 1, 2 };
+			classes = new Class<?>[]{ RotShaman.class, SporeSwarm.class };
+			break;
+		case 44:
+			chances = new float[]{ 1, 3 };
+			classes = new Class<?>[]{ RotShaman.class, SporeSwarm.class };
+			break;
+		case 45:
+			chances = new float[]{ 1 };
+			classes = new Class<?>[]{ VerdantHeart.class };
+			break;
+
+		// --- Vault zone (Act II, depths 46-50) ---
+		case 46:
+			chances = new float[]{ 2, 1 };
+			classes = new Class<?>[]{ GoldGuardian.class, GildedEye.class };
+			break;
+		case 47:
+			chances = new float[]{ 2, 2 };
+			classes = new Class<?>[]{ GoldGuardian.class, GildedEye.class };
+			break;
+		case 48:
+			chances = new float[]{ 1, 2 };
+			classes = new Class<?>[]{ GoldGuardian.class, GildedEye.class };
+			break;
+		case 49:
+			chances = new float[]{ 1, 3 };
+			classes = new Class<?>[]{ GoldGuardian.class, GildedEye.class };
+			break;
+		case 50:
+			chances = new float[]{ 1 };
+			classes = new Class<?>[]{ TheGoldsmith.class };
+			break;
+
 		default:
 			chances = new float[]{ 1 };
 			classes = new Class<?>[]{ Eye.class };
@@ -209,6 +297,10 @@ public class Bestiary {
 			mob instanceof DM300 ||
 			mob instanceof King ||
 			mob instanceof Yog || mob instanceof BurningFist || mob instanceof RottingFist ||
-			mob instanceof FurnaceKing;
+			mob instanceof FurnaceKing ||
+			mob instanceof TheLich ||
+			mob instanceof WhisperingTome ||
+			mob instanceof VerdantHeart ||
+			mob instanceof TheGoldsmith;
 	}
 }
