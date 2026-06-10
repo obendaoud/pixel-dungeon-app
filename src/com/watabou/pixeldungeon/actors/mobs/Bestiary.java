@@ -282,6 +282,101 @@ public class Bestiary {
 			classes = new Class<?>[]{ TheGoldsmith.class };
 			break;
 
+		// --- Mirror Halls (Act III, depths 51-55) ---
+		case 51:
+			chances = new float[]{ 2, 1 };
+			classes = new Class<?>[]{ MirrorWalker.class, ReflectedSentinel.class };
+			break;
+		case 52:
+		case 53:
+			chances = new float[]{ 2, 2 };
+			classes = new Class<?>[]{ MirrorWalker.class, ReflectedSentinel.class };
+			break;
+		case 54:
+			chances = new float[]{ 1, 3 };
+			classes = new Class<?>[]{ MirrorWalker.class, ReflectedSentinel.class };
+			break;
+		case 55:
+			chances = new float[]{ 1 };
+			classes = new Class<?>[]{ MirrorSelf.class };
+			break;
+
+		// --- Gravity Wells (Act III, depths 56-60) ---
+		case 56:
+			chances = new float[]{ 2, 1 };
+			classes = new Class<?>[]{ WellGuard.class, GravitySpinner.class };
+			break;
+		case 57:
+		case 58:
+			chances = new float[]{ 2, 2 };
+			classes = new Class<?>[]{ WellGuard.class, GravitySpinner.class };
+			break;
+		case 59:
+			chances = new float[]{ 3, 1 };
+			classes = new Class<?>[]{ WellGuard.class, GravitySpinner.class };
+			break;
+		case 60:
+			chances = new float[]{ 1 };
+			classes = new Class<?>[]{ ThePull.class };
+			break;
+
+		// --- Time Loop (Act III, depths 61-65) ---
+		case 61:
+			chances = new float[]{ 2, 1 };
+			classes = new Class<?>[]{ ChronoEcho.class, PastReflection.class };
+			break;
+		case 62:
+		case 63:
+			chances = new float[]{ 2, 2 };
+			classes = new Class<?>[]{ ChronoEcho.class, PastReflection.class };
+			break;
+		case 64:
+			chances = new float[]{ 1, 3 };
+			classes = new Class<?>[]{ ChronoEcho.class, PastReflection.class };
+			break;
+		case 65:
+			chances = new float[]{ 1 };
+			classes = new Class<?>[]{ TheWatcher.class };
+			break;
+
+		// --- Echo Chambers (Act III, depths 66-70) ---
+		case 66:
+			chances = new float[]{ 2, 1 };
+			classes = new Class<?>[]{ EchoStalker.class, ResonantSwarm.class };
+			break;
+		case 67:
+		case 68:
+			chances = new float[]{ 2, 2 };
+			classes = new Class<?>[]{ EchoStalker.class, ResonantSwarm.class };
+			break;
+		case 69:
+			chances = new float[]{ 1, 3 };
+			classes = new Class<?>[]{ EchoStalker.class, ResonantSwarm.class };
+			break;
+		case 70:
+			chances = new float[]{ 1 };
+			classes = new Class<?>[]{ TheResonance.class };
+			break;
+
+		// --- Void Reach (Act III, depths 71-75) ---
+		case 71:
+			chances = new float[]{ 2, 1 };
+			classes = new Class<?>[]{ VoidWraith.class, StarvedEye.class };
+			break;
+		case 72:
+		case 73:
+			chances = new float[]{ 2, 2 };
+			classes = new Class<?>[]{ VoidWraith.class, StarvedEye.class };
+			break;
+		case 74:
+			chances = new float[]{ 1, 3 };
+			classes = new Class<?>[]{ VoidWraith.class, StarvedEye.class };
+			break;
+		case 75:
+			chances = new float[]{ 1 };
+			classes = new Class<?>[]{ TheEater.class };
+			break;
+
 		default:
 			chances = new float[]{ 1 };
 			classes = new Class<?>[]{ Eye.class };
@@ -301,6 +396,11 @@ public class Bestiary {
 			mob instanceof TheLich ||
 			mob instanceof WhisperingTome ||
 			mob instanceof VerdantHeart ||
-			mob instanceof TheGoldsmith;
+			mob instanceof TheGoldsmith ||
+			mob instanceof MirrorSelf ||
+			mob instanceof ThePull ||
+			mob instanceof TheWatcher ||
+			mob instanceof TheResonance ||
+			mob instanceof TheEater;
 	}
 }
