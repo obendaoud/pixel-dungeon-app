@@ -184,6 +184,26 @@ public class Dungeon {
 	public static boolean bossLevel( int depth ) {
 		return Zones.isBoss( depth );
 	}
+
+	/** Act containing the current depth, or {@code null} out of range. */
+	public static Act act() {
+		return Act.forDepth( depth );
+	}
+
+	/** Zone containing the current depth, or {@code null} on utility / OOR floors. */
+	public static Zone zone() {
+		return Zones.forDepth( depth );
+	}
+
+	/**
+	 * 1-based floor number within the current zone (1 = entry, lastDepth -
+	 * firstDepth + 1 = boss). Returns 0 when the current depth is not inside a
+	 * registered zone (utility floors, out of range).
+	 */
+	public static int zoneFloor() {
+		Zone z = Zones.forDepth( depth );
+		return z == null ? 0 : depth - z.firstDepth + 1;
+	}
 	
 	@SuppressWarnings("deprecation")
 	public static void switchLevel( final Level level, int pos ) {
