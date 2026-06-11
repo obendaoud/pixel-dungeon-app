@@ -78,7 +78,10 @@ sous notre contrôle.
 - [x] W1 multi-modules (`:core` compile 963 classes, `:android` / `:desktop`
       / `:web` coquilles ; android.jar reste en compileOnly de `:core`,
       dette brûlée en W3)
-- [ ] W2 noosa-libGDX
+- [~] W2 noosa-libGDX : vendore depuis Shattered (module :noosa-gdx, 80
+      fichiers, 0 import android, compile sur libGDX 1.14.0). Derive d'API
+      quantifiee : ~200 erreurs / 43 fichiers, 4 chantiers. Voir
+      docs/API-DRIFT-noosa-gdx.md. Reste : adapter UI/input/texte.
 - [ ] W3 purge android.*
 - [ ] W4 desktop
 - [ ] W5 web
