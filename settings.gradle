@@ -1,0 +1,9 @@
+// 100-floors Pixel Dungeon.
+//
+// Single-module today (compile verification of the legacy layout). The web
+// port (docs/ROADMAP-web-port.md) will split this into:
+//   :core   - pure game logic (the bulk of src/)
+//   :gdx    - noosa reimplemented on libGDX
+//   :web    - gdx-teavm browser backend
+//   :android- legacy Android backend
+rootProject.name = 'pixel-dungeon'
