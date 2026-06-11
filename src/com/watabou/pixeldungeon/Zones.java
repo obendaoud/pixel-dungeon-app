@@ -21,17 +21,25 @@ import com.watabou.pixeldungeon.levels.CavesBossLevel;
 import com.watabou.pixeldungeon.levels.CavesLevel;
 import com.watabou.pixeldungeon.levels.CityBossLevel;
 import com.watabou.pixeldungeon.levels.CityLevel;
+import com.watabou.pixeldungeon.levels.CryptBossLevel;
+import com.watabou.pixeldungeon.levels.CryptLevel;
 import com.watabou.pixeldungeon.levels.DeadEndLevel;
 import com.watabou.pixeldungeon.levels.ForgeBossLevel;
 import com.watabou.pixeldungeon.levels.ForgeLevel;
+import com.watabou.pixeldungeon.levels.GardenBossLevel;
+import com.watabou.pixeldungeon.levels.GardenLevel;
 import com.watabou.pixeldungeon.levels.HallsBossLevel;
 import com.watabou.pixeldungeon.levels.HallsLevel;
 import com.watabou.pixeldungeon.levels.LastShopLevel;
 import com.watabou.pixeldungeon.levels.Level;
+import com.watabou.pixeldungeon.levels.LibraryBossLevel;
+import com.watabou.pixeldungeon.levels.LibraryLevel;
 import com.watabou.pixeldungeon.levels.PrisonBossLevel;
 import com.watabou.pixeldungeon.levels.PrisonLevel;
 import com.watabou.pixeldungeon.levels.SewerBossLevel;
 import com.watabou.pixeldungeon.levels.SewerLevel;
+import com.watabou.pixeldungeon.levels.VaultBossLevel;
+import com.watabou.pixeldungeon.levels.VaultLevel;
 
 /**
  * Central registry of dungeon zones and the depth-to-level dispatcher.
@@ -98,7 +106,38 @@ public final class Zones {
 		}
 	};
 
-	private static final Zone[] ALL = { SEWERS, PRISON, CAVES, CITY, HALLS, FORGE };
+	private static final Zone CRYPT = new Zone(
+			"crypt", Act.TWO, 31, 35, 35, false ) {
+		@Override public Level createLevel( int depth ) {
+			return isBossDepth( depth ) ? new CryptBossLevel() : new CryptLevel();
+		}
+	};
+
+	private static final Zone LIBRARY = new Zone(
+			"library", Act.TWO, 36, 40, 40, false ) {
+		@Override public Level createLevel( int depth ) {
+			return isBossDepth( depth ) ? new LibraryBossLevel() : new LibraryLevel();
+		}
+	};
+
+	private static final Zone GARDEN = new Zone(
+			"garden", Act.TWO, 41, 45, 45, false ) {
+		@Override public Level createLevel( int depth ) {
+			return isBossDepth( depth ) ? new GardenBossLevel() : new GardenLevel();
+		}
+	};
+
+	private static final Zone VAULT = new Zone(
+			"vault", Act.TWO, 46, 50, 50, false ) {
+		@Override public Level createLevel( int depth ) {
+			return isBossDepth( depth ) ? new VaultBossLevel() : new VaultLevel();
+		}
+	};
+
+	private static final Zone[] ALL = {
+			SEWERS, PRISON, CAVES, CITY, HALLS,
+			FORGE, CRYPT, LIBRARY, GARDEN, VAULT
+	};
 
 	public static Zone forDepth( int depth ) {
 		for (Zone z : ALL) {
