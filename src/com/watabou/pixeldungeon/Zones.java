@@ -24,22 +24,32 @@ import com.watabou.pixeldungeon.levels.CityLevel;
 import com.watabou.pixeldungeon.levels.CryptBossLevel;
 import com.watabou.pixeldungeon.levels.CryptLevel;
 import com.watabou.pixeldungeon.levels.DeadEndLevel;
+import com.watabou.pixeldungeon.levels.EchoChambersBossLevel;
+import com.watabou.pixeldungeon.levels.EchoChambersLevel;
 import com.watabou.pixeldungeon.levels.ForgeBossLevel;
 import com.watabou.pixeldungeon.levels.ForgeLevel;
 import com.watabou.pixeldungeon.levels.GardenBossLevel;
 import com.watabou.pixeldungeon.levels.GardenLevel;
+import com.watabou.pixeldungeon.levels.GravityWellsBossLevel;
+import com.watabou.pixeldungeon.levels.GravityWellsLevel;
 import com.watabou.pixeldungeon.levels.HallsBossLevel;
 import com.watabou.pixeldungeon.levels.HallsLevel;
 import com.watabou.pixeldungeon.levels.LastShopLevel;
 import com.watabou.pixeldungeon.levels.Level;
 import com.watabou.pixeldungeon.levels.LibraryBossLevel;
 import com.watabou.pixeldungeon.levels.LibraryLevel;
+import com.watabou.pixeldungeon.levels.MirrorHallsBossLevel;
+import com.watabou.pixeldungeon.levels.MirrorHallsLevel;
 import com.watabou.pixeldungeon.levels.PrisonBossLevel;
 import com.watabou.pixeldungeon.levels.PrisonLevel;
 import com.watabou.pixeldungeon.levels.SewerBossLevel;
 import com.watabou.pixeldungeon.levels.SewerLevel;
+import com.watabou.pixeldungeon.levels.TimeLoopBossLevel;
+import com.watabou.pixeldungeon.levels.TimeLoopLevel;
 import com.watabou.pixeldungeon.levels.VaultBossLevel;
 import com.watabou.pixeldungeon.levels.VaultLevel;
+import com.watabou.pixeldungeon.levels.VoidReachBossLevel;
+import com.watabou.pixeldungeon.levels.VoidReachLevel;
 
 /**
  * Central registry of dungeon zones and the depth-to-level dispatcher.
@@ -134,9 +144,45 @@ public final class Zones {
 		}
 	};
 
+	private static final Zone MIRROR_HALLS = new Zone(
+			"mirror-halls", Act.THREE, 51, 55, 55, false ) {
+		@Override public Level createLevel( int depth ) {
+			return isBossDepth( depth ) ? new MirrorHallsBossLevel() : new MirrorHallsLevel();
+		}
+	};
+
+	private static final Zone GRAVITY_WELLS = new Zone(
+			"gravity-wells", Act.THREE, 56, 60, 60, false ) {
+		@Override public Level createLevel( int depth ) {
+			return isBossDepth( depth ) ? new GravityWellsBossLevel() : new GravityWellsLevel();
+		}
+	};
+
+	private static final Zone TIME_LOOP = new Zone(
+			"time-loop", Act.THREE, 61, 65, 65, false ) {
+		@Override public Level createLevel( int depth ) {
+			return isBossDepth( depth ) ? new TimeLoopBossLevel() : new TimeLoopLevel();
+		}
+	};
+
+	private static final Zone ECHO_CHAMBERS = new Zone(
+			"echo-chambers", Act.THREE, 66, 70, 70, false ) {
+		@Override public Level createLevel( int depth ) {
+			return isBossDepth( depth ) ? new EchoChambersBossLevel() : new EchoChambersLevel();
+		}
+	};
+
+	private static final Zone VOID_REACH = new Zone(
+			"void-reach", Act.THREE, 71, 75, 75, false ) {
+		@Override public Level createLevel( int depth ) {
+			return isBossDepth( depth ) ? new VoidReachBossLevel() : new VoidReachLevel();
+		}
+	};
+
 	private static final Zone[] ALL = {
 			SEWERS, PRISON, CAVES, CITY, HALLS,
-			FORGE, CRYPT, LIBRARY, GARDEN, VAULT
+			FORGE, CRYPT, LIBRARY, GARDEN, VAULT,
+			MIRROR_HALLS, GRAVITY_WELLS, TIME_LOOP, ECHO_CHAMBERS, VOID_REACH
 	};
 
 	public static Zone forDepth( int depth ) {
