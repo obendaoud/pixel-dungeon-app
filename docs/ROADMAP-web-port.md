@@ -88,6 +88,9 @@ sous notre contrôle.
       GameSettings, GLES20 via Blending, FloatMath via Math, Pixmap au
       lieu de Bitmap (FogOfWar, Halo, ItemSprite). android.jar retire des
       dependances de :core.
-- [ ] W4 desktop
+- [x] W4 desktop : module :desktop (LWJGL3) avec DesktopLauncher +
+      DesktopPlatformSupport minimal. `gradle :desktop:installDist` produit
+      un binaire lancable. Reste a tester sur une machine avec ecran
+      (cette sandbox est headless).
 - [ ] W5 web
 - [ ] W6 déploiement

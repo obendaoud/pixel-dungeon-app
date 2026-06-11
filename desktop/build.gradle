@@ -1,2 +1,30 @@
-// LWJGL3 desktop backend. Shell module, implemented in W4 after :core
-// compiles against noosa-libGDX (W2).
+// LWJGL3 desktop backend (W4).
+//
+// Run from a desktop machine with: gradle :desktop:run
+// (needs a display; CI / headless boxes can only compile it)
+
+apply plugin: 'application'
+
+ext.gdxVersion = '1.14.0'
+
+sourceSets {
+	main {
+		java.srcDirs = ['src/main/java']
+		// game assets live at the repo root
+		resources.srcDirs = ['../assets']
+	}
+}
+
+dependencies {
+	implementation project(':core')
+	implementation project(':noosa-gdx')
+	implementation "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
+	implementation "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
+	implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
+	implementation "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
+	implementation "com.badlogicgames.gdx-controllers:gdx-controllers-desktop:2.2.3"
+}
+
+application {
+	mainClass = 'com.watabou.pixeldungeon.desktop.DesktopLauncher'
+}
