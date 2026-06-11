@@ -36,7 +36,14 @@ public class Statistics {
 	public static boolean completedWithNoKilling = false;
 	
 	public static boolean amuletObtained = false;
-	
+
+	/**
+	 * Set by {@link com.watabou.pixeldungeon.actors.mobs.TheArchitect} on
+	 * death. Marks the 100-floor run as completed, regardless of whether the
+	 * player goes on to pick up the Amulet of Yendor.
+	 */
+	public static boolean finalBossSlain = false;
+
 	public static void reset() {
 		
 		goldCollected	= 0;
@@ -53,9 +60,10 @@ public class Statistics {
 		qualifiedForNoKilling = false;
 		
 		amuletObtained = false;
-		
+
+		finalBossSlain = false;
 	}
-	
+
 	private static final String GOLD		= "score";
 	private static final String DEEPEST		= "maxDepth";
 	private static final String SLAIN		= "enemiesSlain";
@@ -66,7 +74,8 @@ public class Statistics {
 	private static final String ANKHS		= "ankhsUsed";
 	private static final String DURATION	= "duration";
 	private static final String AMULET		= "amuletObtained";
-	
+	private static final String FINAL_BOSS	= "finalBossSlain";
+
 	public static void storeInBundle( Bundle bundle ) {
 		bundle.put( GOLD,		goldCollected );
 		bundle.put( DEEPEST,	deepestFloor );
@@ -78,8 +87,9 @@ public class Statistics {
 		bundle.put( ANKHS,		ankhsUsed );
 		bundle.put( DURATION,	duration );
 		bundle.put( AMULET,		amuletObtained );
+		bundle.put( FINAL_BOSS,	finalBossSlain );
 	}
-	
+
 	public static void restoreFromBundle( Bundle bundle ) {
 		goldCollected	= bundle.getInt( GOLD );
 		deepestFloor	= bundle.getInt( DEEPEST );
@@ -91,6 +101,7 @@ public class Statistics {
 		ankhsUsed		= bundle.getInt( ANKHS );
 		duration		= bundle.getFloat( DURATION );
 		amuletObtained	= bundle.getBoolean( AMULET );
+		finalBossSlain	= bundle.getBoolean( FINAL_BOSS );
 	}
 
 }
