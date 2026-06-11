@@ -1,38 +1,22 @@
-// Compile-only verification build (see docs/BUILD.md).
+// Root build for the multi-module layout (see settings.gradle and
+// docs/ROADMAP-web-port.md).
 //
 // Usage:
-//   ./tools/fetch-deps.sh   # once, populates libs/
-//   gradle compileJava      # compiles all 586+ sources against PD-classes
+//   ./tools/fetch-deps.sh        # once, populates libs/
+//   gradle :core:compileJava     # compiles the whole game logic
 //
-// This does NOT produce an APK or a web bundle; it proves that the source
-// resolves against the real Watabou API surface. The multi-module split for
-// the web port is described in docs/ROADMAP-web-port.md.
+// Java-only verification for now; no APK / web bundle is produced yet.
 
-plugins {
-	id 'java'
-}
+subprojects {
+	apply plugin: 'java'
 
-java {
-	sourceCompatibility = JavaVersion.VERSION_1_8
-	targetCompatibility = JavaVersion.VERSION_1_8
-}
-
-sourceSets {
-	main {
-		java.srcDirs = ['src']
+	java {
+		sourceCompatibility = JavaVersion.VERSION_1_8
+		targetCompatibility = JavaVersion.VERSION_1_8
 	}
-}
 
-dependencies {
-	// Order matters: the FloatMath shim must precede android.jar so its
-	// non-empty android.util.FloatMath shadows the gutted platform one.
-	compileOnly files('libs/floatmath-stub.jar')
-	compileOnly files('libs/pd-classes.jar')
-	compileOnly files('libs/android.jar')
-}
-
-tasks.withType(JavaCompile).configureEach {
-	options.encoding = 'UTF-8'
-	// The codebase predates Java 8; silence the obsolete-options warnings.
-	options.compilerArgs << '-Xlint:-options'
+	tasks.withType(JavaCompile).configureEach {
+		options.encoding = 'UTF-8'
+		options.compilerArgs << '-Xlint:-options'
+	}
 }

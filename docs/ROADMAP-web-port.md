@@ -75,7 +75,9 @@ sous notre contrôle.
 
 - [x] Compilation Gradle de l'existant vérifiée (`build.gradle` racine,
       `tools/fetch-deps.sh`, 963 classes, 0 erreur)
-- [ ] W1 multi-modules
+- [x] W1 multi-modules (`:core` compile 963 classes, `:android` / `:desktop`
+      / `:web` coquilles ; android.jar reste en compileOnly de `:core`,
+      dette brûlée en W3)
 - [ ] W2 noosa-libGDX
 - [ ] W3 purge android.*
 - [ ] W4 desktop

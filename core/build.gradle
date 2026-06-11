@@ -1,0 +1,21 @@
+// Game logic. Sources stay at the historical location (../src) to keep the
+// git history clean; they will be physically moved here once the Android
+// backend is fully extracted (W3).
+//
+// android.jar is compileOnly DEBT: 24 files still import android.* (mostly
+// android.opengl.GLES20 in effects/). W2 (noosa-libGDX) and W3 (purge)
+// remove it. Do not add new android.* imports.
+
+sourceSets {
+	main {
+		java.srcDirs = ['../src']
+	}
+}
+
+dependencies {
+	// Order matters: the FloatMath shim must precede android.jar so its
+	// non-empty android.util.FloatMath shadows the gutted platform one.
+	compileOnly files('../libs/floatmath-stub.jar')
+	compileOnly files('../libs/pd-classes.jar')
+	compileOnly files('../libs/android.jar')
+}

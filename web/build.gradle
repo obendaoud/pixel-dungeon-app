@@ -1,0 +1,2 @@
+// gdx-teavm browser backend. Shell module, implemented in W5.
+// Target: static JS/WASM bundle deployable on GitHub Pages.
