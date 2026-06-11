@@ -17,8 +17,6 @@
  */
 package com.watabou.pixeldungeon.scenes;
 
-import android.content.Intent;
-import android.net.Uri;
 
 import com.watabou.input.Touchscreen.Touch;
 import com.watabou.noosa.BitmapTextMultiline;
@@ -68,8 +66,7 @@ public class AboutScene extends PixelScene {
 		TouchArea hotArea = new TouchArea( link ) {
 			@Override
 			protected void onClick( Touch touch ) {
-				Intent intent = new Intent( Intent.ACTION_VIEW, Uri.parse( "http://" + LNK ) );
-				Game.instance.startActivity( intent );
+				Game.platform.openURI( "http://" + LNK );
 			}
 		};
 		add( hotArea );

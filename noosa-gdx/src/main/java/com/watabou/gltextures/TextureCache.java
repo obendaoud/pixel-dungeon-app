@@ -100,6 +100,11 @@ public class TextureCache {
 		}
 	}
 	
+	// Restored from the original 2012 API for legacy callers (Halo, FogOfWar, Gradient)
+	public synchronized static void add( Object key, SmartTexture tx ) {
+		all.put( key, tx );
+	}
+
 	public synchronized static void remove( Object key ){
 		SmartTexture tx = all.get( key );
 		if (tx != null){

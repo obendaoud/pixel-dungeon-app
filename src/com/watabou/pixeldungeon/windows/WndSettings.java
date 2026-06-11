@@ -109,7 +109,7 @@ public class WndSettings extends Window {
 			};
 			btnImmersive.setRect( 0, btnScaleUp.bottom() + GAP, WIDTH, BTN_HEIGHT );
 			btnImmersive.checked( PixelDungeon.immersed() );
-			btnImmersive.enable( android.os.Build.VERSION.SDK_INT >= 19 );
+			btnImmersive.enable( com.watabou.utils.DeviceCompat.isAndroid() );
 			add( btnImmersive );
 			
 		}

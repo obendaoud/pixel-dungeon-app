@@ -17,11 +17,10 @@
  */
 package com.watabou.pixeldungeon.scenes;
 
-import javax.microedition.khronos.opengles.GL10;
 
-import android.opengl.GLES20;
 
-import com.watabou.input.Touchscreen;
+import com.watabou.glwrap.Blending;
+import com.watabou.input.PointerEvent;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.BitmapText.Font;
 import com.watabou.noosa.BitmapTextMultiline;
@@ -34,7 +33,7 @@ import com.watabou.pixeldungeon.Assets;
 import com.watabou.pixeldungeon.Badges;
 import com.watabou.pixeldungeon.PixelDungeon;
 import com.watabou.pixeldungeon.effects.BadgeBanner;
-import com.watabou.utils.BitmapCache;
+import com.watabou.gltextures.TextureCache;
 
 public class PixelScene extends Scene {
 	
@@ -104,31 +103,31 @@ public class PixelScene extends Scene {
 			
 			// 3x5 (6)
 			font1x = Font.colorMarked( 
-				BitmapCache.get( Assets.FONTS1X ), 0x00000000, BitmapText.Font.LATIN_FULL );
+				TextureCache.get( Assets.FONTS1X ), 0x00000000, BitmapText.Font.LATIN_FULL );
 			font1x.baseLine = 6;
 			font1x.tracking = -1;
 			
 			// 5x8 (10)
 			font15x = Font.colorMarked( 
-					BitmapCache.get( Assets.FONTS15X ), 12, 0x00000000, BitmapText.Font.LATIN_FULL );
+					TextureCache.get( Assets.FONTS15X ), 12, 0x00000000, BitmapText.Font.LATIN_FULL );
 			font15x.baseLine = 9;
 			font15x.tracking = -1;
 			
 			// 6x10 (12)
 			font2x = Font.colorMarked( 
-				BitmapCache.get( Assets.FONTS2X ), 14, 0x00000000, BitmapText.Font.LATIN_FULL );
+				TextureCache.get( Assets.FONTS2X ), 14, 0x00000000, BitmapText.Font.LATIN_FULL );
 			font2x.baseLine = 11;
 			font2x.tracking = -1;
 			
 			// 7x12 (15)
 			font25x = Font.colorMarked( 
-				BitmapCache.get( Assets.FONTS25X ), 17, 0x00000000, BitmapText.Font.LATIN_FULL );
+				TextureCache.get( Assets.FONTS25X ), 17, 0x00000000, BitmapText.Font.LATIN_FULL );
 			font25x.baseLine = 13;
 			font25x.tracking = -1;
 			
 			// 9x15 (18)
 			font3x = Font.colorMarked( 
-				BitmapCache.get( Assets.FONTS3X ), 22, 0x00000000, BitmapText.Font.LATIN_FULL );
+				TextureCache.get( Assets.FONTS3X ), 22, 0x00000000, BitmapText.Font.LATIN_FULL );
 			font3x.baseLine = 17;
 			font3x.tracking = -2;
 		}
@@ -137,7 +136,7 @@ public class PixelScene extends Scene {
 	@Override
 	public void destroy() {
 		super.destroy();
-		Touchscreen.event.removeAll();
+		PointerEvent.clearListeners();
 	}
 	
 	public static BitmapText.Font font;
@@ -304,9 +303,9 @@ public class PixelScene extends Scene {
 		@Override
 		public void draw() {
 			if (light) {
-				GLES20.glBlendFunc( GL10.GL_SRC_ALPHA, GL10.GL_ONE );
+				Blending.setLightMode();
 				super.draw();
-				GLES20.glBlendFunc( GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA );
+				Blending.setNormalMode();
 			} else {
 				super.draw();
 			}

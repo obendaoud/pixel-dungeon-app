@@ -29,6 +29,7 @@ import com.watabou.pixeldungeon.actors.hero.HeroClass;
 import com.watabou.pixeldungeon.utils.Utils;
 import com.watabou.utils.Bundlable;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.FileUtils;
 import com.watabou.utils.SystemTime;
 
 public enum Rankings {
@@ -82,7 +83,7 @@ public enum Rankings {
 			}
 			
 			if (removedGame.gameFile.length() > 0) {
-				Game.instance.deleteFile( removedGame.gameFile );
+				FileUtils.deleteFile( removedGame.gameFile );
 			}
 		}
 		
@@ -113,9 +114,7 @@ public enum Rankings {
 		bundle.put( WON, wonNumber );
 		
 		try {
-			OutputStream output = Game.instance.openFileOutput( RANKINGS_FILE, Game.MODE_PRIVATE );
-			Bundle.write( bundle, output );
-			output.close();
+			FileUtils.bundleToFile( RANKINGS_FILE, bundle );
 		} catch (Exception e) {
 		}
 	}
@@ -129,9 +128,7 @@ public enum Rankings {
 		records = new ArrayList<Rankings.Record>();
 		
 		try {
-			InputStream input = Game.instance.openFileInput( RANKINGS_FILE );
-			Bundle bundle = Bundle.read( input );
-			input.close();
+			Bundle bundle = FileUtils.bundleFromFile( RANKINGS_FILE );
 			
 			for (Bundlable record : bundle.getCollection( RECORDS )) {
 				records.add( (Record)record );

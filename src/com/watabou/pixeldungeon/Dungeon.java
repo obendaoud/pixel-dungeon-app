@@ -18,6 +18,7 @@
 package com.watabou.pixeldungeon;
 
 import java.io.IOException;
+import com.watabou.utils.FileUtils;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.ArrayList;
@@ -364,9 +365,7 @@ public class Dungeon {
 			Badges.saveLocal( badges );
 			bundle.put( BADGES, badges );
 			
-			OutputStream output = Game.instance.openFileOutput( fileName, Game.MODE_PRIVATE );
-			Bundle.write( bundle, output );
-			output.close();
+			FileUtils.bundleToFile( fileName, bundle );
 			
 		} catch (Exception e) {
 
@@ -378,9 +377,7 @@ public class Dungeon {
 		Bundle bundle = new Bundle();
 		bundle.put( LEVEL, level );
 		
-		OutputStream output = Game.instance.openFileOutput( Utils.format( depthFile( hero.heroClass ), depth ), Game.MODE_PRIVATE );
-		Bundle.write( bundle, output );
-		output.close();
+		FileUtils.bundleToFile( Utils.format( depthFile( hero.heroClass ), depth ), bundle );
 	}
 	
 	public static void saveAll() throws IOException {
@@ -496,20 +493,18 @@ public class Dungeon {
 		Dungeon.level = null;
 		Actor.clear();
 		
-		InputStream input = Game.instance.openFileInput( Utils.format( depthFile( cl ), depth ) ) ;
-		Bundle bundle = Bundle.read( input );
-		input.close();
+		Bundle bundle = FileUtils.bundleFromFile( Utils.format( depthFile( cl ), depth ) );
 		
 		return (Level)bundle.get( "level" );
 	}
 	
 	public static void deleteGame( HeroClass cl, boolean deleteLevels ) {
 		
-		Game.instance.deleteFile( gameFile( cl ) );
-		
+		FileUtils.deleteFile( gameFile( cl ) );
+
 		if (deleteLevels) {
 			int depth = 1;
-			while (Game.instance.deleteFile( Utils.format( depthFile( cl ), depth ) )) {
+			while (FileUtils.deleteFile( Utils.format( depthFile( cl ), depth ) )) {
 				depth++;
 			}
 		}
@@ -519,9 +514,7 @@ public class Dungeon {
 	
 	public static Bundle gameBundle( String fileName ) throws IOException {
 		
-		InputStream input = Game.instance.openFileInput( fileName );
-		Bundle bundle = Bundle.read( input );
-		input.close();
+		Bundle bundle = FileUtils.bundleFromFile( fileName );
 		
 		return bundle;
 	}
@@ -613,7 +606,7 @@ public class Dungeon {
 		}
 		passable[cur] = true;
 		
-		return PathFinder.getStepBack( cur, from, passable );
+		return PathFinder.getStepBack( cur, from, 5, passable, true );
 		
 	}
 

@@ -17,10 +17,9 @@
  */
 package com.watabou.pixeldungeon.scenes;
 
-import javax.microedition.khronos.opengles.GL10;
 
-import android.opengl.GLES20;
 
+import com.watabou.glwrap.Blending;
 import com.watabou.noosa.BitmapText;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
@@ -81,9 +80,9 @@ public class TitleScene extends PixelScene {
 			}
 			@Override
 			public void draw() {
-				GLES20.glBlendFunc( GL10.GL_SRC_ALPHA, GL10.GL_ONE );
+				Blending.setLightMode();
 				super.draw();
-				GLES20.glBlendFunc( GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA );
+				Blending.setNormalMode();
 			}
 		};
 		signs.x = title.x;

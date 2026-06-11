@@ -26,6 +26,7 @@ import com.watabou.pixeldungeon.items.Gold;
 import com.watabou.pixeldungeon.items.Item;
 import com.watabou.pixeldungeon.items.rings.Ring;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.FileUtils;
 import com.watabou.utils.Random;
 
 public class Bones {
@@ -70,9 +71,7 @@ public class Bones {
 		bundle.put( ITEM, item );
 		
 		try {
-			OutputStream output = Game.instance.openFileOutput( BONES_FILE, Game.MODE_PRIVATE );
-			Bundle.write( bundle, output );
-			output.close();
+			FileUtils.bundleToFile( BONES_FILE, bundle );
 		} catch (IOException e) {
 
 		}
@@ -82,9 +81,7 @@ public class Bones {
 		if (depth == -1) {
 			
 			try {
-				InputStream input = Game.instance.openFileInput( BONES_FILE ) ;
-				Bundle bundle = Bundle.read( input );
-				input.close();
+				Bundle bundle = FileUtils.bundleFromFile( BONES_FILE );
 				
 				depth = bundle.getInt( LEVEL );
 				item = (Item)bundle.get( ITEM );
@@ -97,7 +94,7 @@ public class Bones {
 			
 		} else {
 			if (depth == Dungeon.depth) {
-				Game.instance.deleteFile( BONES_FILE );
+				FileUtils.deleteFile( BONES_FILE );
 				depth = 0;
 				
 				if (!item.stackable) {

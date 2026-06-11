@@ -146,17 +146,15 @@ public class GameScene extends PixelScene {
 		plants = new Group();
 		add( plants );
 		
-		int size = Dungeon.level.plants.size();
-		for (int i=0; i < size; i++) {
-			addPlantSprite( Dungeon.level.plants.valueAt( i ) );
+		for (com.watabou.pixeldungeon.plants.Plant plant : Dungeon.level.plants.valueList()) {
+			addPlantSprite( plant );
 		}
 		
 		heaps = new Group();
 		add( heaps );
 		
-		size = Dungeon.level.heaps.size();
-		for (int i=0; i < size; i++) {
-			addHeapSprite( Dungeon.level.heaps.valueAt( i ) );
+		for (com.watabou.pixeldungeon.items.Heap heap : Dungeon.level.heaps.valueList()) {
+			addHeapSprite( heap );
 		}
 
 		emitters = new Group();
@@ -286,7 +284,7 @@ public class GameScene extends PixelScene {
 			Dungeon.droppedItems.remove( Dungeon.depth );
 		}
 		
-		Camera.main.target = hero;
+		Camera.main.panFollow( hero, 1f );
 
 		if (InterlevelScene.mode != InterlevelScene.Mode.NONE) {
 			if (Dungeon.depth < Statistics.deepestFloor) {
@@ -330,7 +328,7 @@ public class GameScene extends PixelScene {
 	}
 	
 	@Override
-	public synchronized void pause() {
+	public synchronized void onPause() {
 		try {
 			Dungeon.saveAll();
 			Badges.saveGlobal();
@@ -365,7 +363,6 @@ public class GameScene extends PixelScene {
 		}
 	}
 	
-	@Override
 	protected void onMenuPressed() {
 		if (Dungeon.hero.ready) {
 			selectItem( null, WndBag.Mode.ALL, null );
@@ -522,13 +519,13 @@ public class GameScene extends PixelScene {
 	
 	public static void updateMap() {
 		if (scene != null) {
-			scene.tiles.updated.set( 0, 0, Level.WIDTH, Level.HEIGHT );
+			scene.tiles.updateMap();
 		}
 	}
 	
 	public static void updateMap( int cell ) {
 		if (scene != null) {
-			scene.tiles.updated.union( cell % Level.WIDTH, cell / Level.WIDTH );
+			scene.tiles.updateMapCell( cell );
 		}
 	}
 	
