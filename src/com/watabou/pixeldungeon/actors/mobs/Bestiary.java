@@ -469,7 +469,7 @@ public class Bestiary {
 			break;
 		case 100:
 			chances = new float[]{ 1 };
-			classes = new Class<?>[]{ TheFirstGoo.class };
+			classes = new Class<?>[]{ TheArchitect.class };
 			break;
 
 		default:
@@ -501,6 +501,7 @@ public class Bestiary {
 			mob instanceof DwarfLich ||
 			mob instanceof DM666 ||
 			mob instanceof TenguTrinity ||
-			mob instanceof TheFirstGoo;
+			mob instanceof TheFirstGoo ||
+			mob instanceof TheArchitect;
 	}
 }
