@@ -17,15 +17,23 @@
  */
 package com.watabou.pixeldungeon;
 
+import com.watabou.pixeldungeon.levels.BloodyPrisonBossLevel;
+import com.watabou.pixeldungeon.levels.BloodyPrisonLevel;
+import com.watabou.pixeldungeon.levels.BurningCavesBossLevel;
+import com.watabou.pixeldungeon.levels.BurningCavesLevel;
 import com.watabou.pixeldungeon.levels.CavesBossLevel;
 import com.watabou.pixeldungeon.levels.CavesLevel;
 import com.watabou.pixeldungeon.levels.CityBossLevel;
 import com.watabou.pixeldungeon.levels.CityLevel;
+import com.watabou.pixeldungeon.levels.CorruptedHallsBossLevel;
+import com.watabou.pixeldungeon.levels.CorruptedHallsLevel;
 import com.watabou.pixeldungeon.levels.CryptBossLevel;
 import com.watabou.pixeldungeon.levels.CryptLevel;
 import com.watabou.pixeldungeon.levels.DeadEndLevel;
 import com.watabou.pixeldungeon.levels.EchoChambersBossLevel;
 import com.watabou.pixeldungeon.levels.EchoChambersLevel;
+import com.watabou.pixeldungeon.levels.FinalSewerBossLevel;
+import com.watabou.pixeldungeon.levels.FinalSewerLevel;
 import com.watabou.pixeldungeon.levels.ForgeBossLevel;
 import com.watabou.pixeldungeon.levels.ForgeLevel;
 import com.watabou.pixeldungeon.levels.GardenBossLevel;
@@ -44,6 +52,8 @@ import com.watabou.pixeldungeon.levels.PrisonBossLevel;
 import com.watabou.pixeldungeon.levels.PrisonLevel;
 import com.watabou.pixeldungeon.levels.SewerBossLevel;
 import com.watabou.pixeldungeon.levels.SewerLevel;
+import com.watabou.pixeldungeon.levels.TaintedCityBossLevel;
+import com.watabou.pixeldungeon.levels.TaintedCityLevel;
 import com.watabou.pixeldungeon.levels.TimeLoopBossLevel;
 import com.watabou.pixeldungeon.levels.TimeLoopLevel;
 import com.watabou.pixeldungeon.levels.VaultBossLevel;
@@ -179,10 +189,46 @@ public final class Zones {
 		}
 	};
 
+	private static final Zone CORRUPTED_HALLS = new Zone(
+			"corrupted-halls", Act.FOUR, 76, 80, 80, false ) {
+		@Override public Level createLevel( int depth ) {
+			return isBossDepth( depth ) ? new CorruptedHallsBossLevel() : new CorruptedHallsLevel();
+		}
+	};
+
+	private static final Zone TAINTED_CITY = new Zone(
+			"tainted-city", Act.FOUR, 81, 85, 85, false ) {
+		@Override public Level createLevel( int depth ) {
+			return isBossDepth( depth ) ? new TaintedCityBossLevel() : new TaintedCityLevel();
+		}
+	};
+
+	private static final Zone BURNING_CAVES = new Zone(
+			"burning-caves", Act.FOUR, 86, 90, 90, false ) {
+		@Override public Level createLevel( int depth ) {
+			return isBossDepth( depth ) ? new BurningCavesBossLevel() : new BurningCavesLevel();
+		}
+	};
+
+	private static final Zone BLOODY_PRISON = new Zone(
+			"bloody-prison", Act.FOUR, 91, 95, 95, false ) {
+		@Override public Level createLevel( int depth ) {
+			return isBossDepth( depth ) ? new BloodyPrisonBossLevel() : new BloodyPrisonLevel();
+		}
+	};
+
+	private static final Zone FINAL_SEWER = new Zone(
+			"final-sewer", Act.FOUR, 96, 100, 100, false ) {
+		@Override public Level createLevel( int depth ) {
+			return isBossDepth( depth ) ? new FinalSewerBossLevel() : new FinalSewerLevel();
+		}
+	};
+
 	private static final Zone[] ALL = {
 			SEWERS, PRISON, CAVES, CITY, HALLS,
 			FORGE, CRYPT, LIBRARY, GARDEN, VAULT,
-			MIRROR_HALLS, GRAVITY_WELLS, TIME_LOOP, ECHO_CHAMBERS, VOID_REACH
+			MIRROR_HALLS, GRAVITY_WELLS, TIME_LOOP, ECHO_CHAMBERS, VOID_REACH,
+			CORRUPTED_HALLS, TAINTED_CITY, BURNING_CAVES, BLOODY_PRISON, FINAL_SEWER
 	};
 
 	public static Zone forDepth( int depth ) {

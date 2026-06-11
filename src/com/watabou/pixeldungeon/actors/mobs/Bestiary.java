@@ -377,6 +377,101 @@ public class Bestiary {
 			classes = new Class<?>[]{ TheEater.class };
 			break;
 
+		// --- Corrupted Halls (Act IV, depths 76-80) ---
+		case 76:
+			chances = new float[]{ 2, 1 };
+			classes = new Class<?>[]{ TwistedSuccubus.class, RotEye.class };
+			break;
+		case 77:
+		case 78:
+			chances = new float[]{ 2, 2 };
+			classes = new Class<?>[]{ TwistedSuccubus.class, RotEye.class };
+			break;
+		case 79:
+			chances = new float[]{ 1, 3 };
+			classes = new Class<?>[]{ TwistedSuccubus.class, RotEye.class };
+			break;
+		case 80:
+			chances = new float[]{ 1 };
+			classes = new Class<?>[]{ YogReborn.class };
+			break;
+
+		// --- Tainted City (Act IV, depths 81-85) ---
+		case 81:
+			chances = new float[]{ 2, 1 };
+			classes = new Class<?>[]{ HollowMonk.class, HostileMerchant.class };
+			break;
+		case 82:
+		case 83:
+			chances = new float[]{ 2, 2 };
+			classes = new Class<?>[]{ HollowMonk.class, HostileMerchant.class };
+			break;
+		case 84:
+			chances = new float[]{ 1, 3 };
+			classes = new Class<?>[]{ HollowMonk.class, HostileMerchant.class };
+			break;
+		case 85:
+			chances = new float[]{ 1 };
+			classes = new Class<?>[]{ DwarfLich.class };
+			break;
+
+		// --- Burning Caves (Act IV, depths 86-90) ---
+		case 86:
+			chances = new float[]{ 2, 1 };
+			classes = new Class<?>[]{ AshGolem.class, ScorchedBat.class };
+			break;
+		case 87:
+		case 88:
+			chances = new float[]{ 2, 2 };
+			classes = new Class<?>[]{ AshGolem.class, ScorchedBat.class };
+			break;
+		case 89:
+			chances = new float[]{ 1, 3 };
+			classes = new Class<?>[]{ AshGolem.class, ScorchedBat.class };
+			break;
+		case 90:
+			chances = new float[]{ 1 };
+			classes = new Class<?>[]{ DM666.class };
+			break;
+
+		// --- Bloody Prison (Act IV, depths 91-95) ---
+		case 91:
+			chances = new float[]{ 2, 1 };
+			classes = new Class<?>[]{ GoreSkeleton.class, BloodThief.class };
+			break;
+		case 92:
+		case 93:
+			chances = new float[]{ 2, 2 };
+			classes = new Class<?>[]{ GoreSkeleton.class, BloodThief.class };
+			break;
+		case 94:
+			chances = new float[]{ 1, 3 };
+			classes = new Class<?>[]{ GoreSkeleton.class, BloodThief.class };
+			break;
+		case 95:
+			chances = new float[]{ 1 };
+			classes = new Class<?>[]{ TenguTrinity.class };
+			break;
+
+		// --- Final Sewer (Act IV, depths 96-100) ---
+		case 96:
+			chances = new float[]{ 2, 1 };
+			classes = new Class<?>[]{ SludgeRat.class, OozeCrab.class };
+			break;
+		case 97:
+		case 98:
+			chances = new float[]{ 2, 2 };
+			classes = new Class<?>[]{ SludgeRat.class, OozeCrab.class };
+			break;
+		case 99:
+			chances = new float[]{ 1, 3 };
+			classes = new Class<?>[]{ SludgeRat.class, OozeCrab.class };
+			break;
+		case 100:
+			chances = new float[]{ 1 };
+			classes = new Class<?>[]{ TheFirstGoo.class };
+			break;
+
 		default:
 			chances = new float[]{ 1 };
 			classes = new Class<?>[]{ Eye.class };
@@ -401,6 +496,11 @@ public class Bestiary {
 			mob instanceof ThePull ||
 			mob instanceof TheWatcher ||
 			mob instanceof TheResonance ||
-			mob instanceof TheEater;
+			mob instanceof TheEater ||
+			mob instanceof YogReborn ||
+			mob instanceof DwarfLich ||
+			mob instanceof DM666 ||
+			mob instanceof TenguTrinity ||
+			mob instanceof TheFirstGoo;
 	}
 }
