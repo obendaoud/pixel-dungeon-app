@@ -170,7 +170,30 @@ public class Bestiary {
 			chances = new float[]{ 1 };
 			classes = new Class<?>[]{ Yog.class };
 			break;
-			
+
+		// --- Forge zone (Act II, depths 26-30) ---
+		case 26:
+			chances = new float[]{ 2, 1 };
+			classes = new Class<?>[]{ LavaImp.class, MoltenGolem.class };
+			break;
+		case 27:
+			chances = new float[]{ 2, 2 };
+			classes = new Class<?>[]{ LavaImp.class, MoltenGolem.class };
+			break;
+		case 28:
+			chances = new float[]{ 1, 2 };
+			classes = new Class<?>[]{ LavaImp.class, MoltenGolem.class };
+			break;
+		case 29:
+			chances = new float[]{ 1, 3 };
+			classes = new Class<?>[]{ LavaImp.class, MoltenGolem.class };
+			break;
+
+		case 30:
+			chances = new float[]{ 1 };
+			classes = new Class<?>[]{ FurnaceKing.class };
+			break;
+
 		default:
 			chances = new float[]{ 1 };
 			classes = new Class<?>[]{ Eye.class };
@@ -180,11 +203,12 @@ public class Bestiary {
 	}
 	
 	public static boolean isBoss( Char mob ) {
-		return 
-			mob instanceof Goo || 
-			mob instanceof Tengu || 
-			mob instanceof DM300 || 
-			mob instanceof King || 
-			mob instanceof Yog || mob instanceof BurningFist || mob instanceof RottingFist;
+		return
+			mob instanceof Goo ||
+			mob instanceof Tengu ||
+			mob instanceof DM300 ||
+			mob instanceof King ||
+			mob instanceof Yog || mob instanceof BurningFist || mob instanceof RottingFist ||
+			mob instanceof FurnaceKing;
 	}
 }
