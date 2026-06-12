@@ -278,7 +278,7 @@ public class BitmapText extends Visual {
 		spaceMeasuring:
 			for (pos=0; pos <  width; pos++) {
 				for (int j=0; j < height; j++) {
-					if (bitmap.getPixel( pos, j ) != color) {
+					if (colorNotMatch( bitmap, pos, j, color )) {
 						break spaceMeasuring;
 					}
 				}
