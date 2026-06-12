@@ -157,17 +157,26 @@ public class Game implements ApplicationListener {
 			if (DeviceCompat.isAndroid()) return;
 		}
 
-		NoosaScript.get().resetCamera();
-		NoosaScriptNoLighting.get().resetCamera();
-		Gdx.gl.glDisable(Gdx.gl.GL_SCISSOR_TEST);
-		Gdx.gl.glClear(Gdx.gl.GL_COLOR_BUFFER_BIT);
-		draw();
+		// The gdx-teavm render loop wraps each frame in a catch that calls
+		// Throwable.printStackTrace, which itself NPEs in the browser when a
+		// frame or message is null, masking the real cause. Log defensively
+		// here first so the true exception always reaches the console.
+		try {
+			NoosaScript.get().resetCamera();
+			NoosaScriptNoLighting.get().resetCamera();
+			Gdx.gl.glDisable(Gdx.gl.GL_SCISSOR_TEST);
+			Gdx.gl.glClear(Gdx.gl.GL_COLOR_BUFFER_BIT);
+			draw();
 
-		Gdx.gl.glDisable( Gdx.gl.GL_SCISSOR_TEST );
-		
-		step();
+			Gdx.gl.glDisable( Gdx.gl.GL_SCISSOR_TEST );
+
+			step();
+		} catch (Throwable t) {
+			reportException( t );
+			throw t;
+		}
 	}
-	
+
 	@Override
 	public void pause() {
 		if (scene != null) {
