@@ -39,8 +39,6 @@ import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.PlatformSupport;
 import com.watabou.utils.Reflection;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
 
 public class Game implements ApplicationListener {
 
@@ -286,12 +284,21 @@ public class Game implements ApplicationListener {
 		if (instance != null && Gdx.app != null) {
 			instance.logException(tr);
 		} else {
-			//fallback if error happened in initialization
-			StringWriter sw = new StringWriter();
-			PrintWriter pw = new PrintWriter(sw);
-			tr.printStackTrace(pw);
-			pw.flush();
-			System.err.println(sw.toString());
+			//fallback if error happened in initialization. printStackTrace
+			//can itself throw under TeaVM, so keep this path defensive too.
+			Throwable t = tr;
+			int depth = 0;
+			while (t != null && depth < 8) {
+				System.err.println((depth == 0 ? "exception: " : "caused by: ") + t.getClass().getName());
+				try {
+					String m = t.getMessage();
+					if (m != null) {
+						System.err.println("message: " + m);
+					}
+				} catch (Throwable ignored) { }
+				t = t.getCause();
+				depth++;
+			}
 		}
 	}
 	
