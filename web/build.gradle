@@ -1,2 +1,48 @@
-// gdx-teavm browser backend. Shell module, implemented in W5.
-// Target: static JS/WASM bundle deployable on GitHub Pages.
+// gdx-teavm browser backend (W5). Produces a static JS bundle that runs
+// the whole game in a browser.
+//
+// Build commands:
+//   ./gradlew :web:buildWeb     -> generates web/build/dist/
+//   ./gradlew :web:runWeb       -> builds + serves on http://localhost:8080
+//
+// gdx-teavm 1.2.0 was published against libGDX 1.13.1. We force the
+// transitive libGDX version of :core / :noosa-gdx to match, so we don't
+// end up with two gdx-X.Y.Z jars on the classpath.
+
+ext.gdxTeavmVersion = '1.2.0'
+ext.pinnedGdxVersion = '1.13.1'
+
+// gdx-teavm targets a newer JVM than Java 8; this module just runs the
+// TeaVM compiler (output is browser JS), so JVM compat here is irrelevant.
+java {
+	sourceCompatibility = JavaVersion.VERSION_11
+	targetCompatibility = JavaVersion.VERSION_11
+}
+
+// JitPack hosts jMultiplatform and other gdx-teavm dependencies.
+repositories {
+	maven { url 'https://jitpack.io' }
+}
+
+configurations.all {
+	resolutionStrategy {
+		force "com.badlogicgames.gdx:gdx:$pinnedGdxVersion"
+		force "com.badlogicgames.gdx:gdx-freetype:$pinnedGdxVersion"
+	}
+}
+
+dependencies {
+	implementation project(':core')
+	implementation project(':noosa-gdx')
+	implementation "com.badlogicgames.gdx:gdx-freetype:$pinnedGdxVersion"
+	implementation "com.github.xpenatan.gdx-teavm:backend-teavm:$gdxTeavmVersion"
+	implementation "com.github.xpenatan.gdx-teavm:gdx-freetype-teavm:$gdxTeavmVersion"
+}
+
+tasks.register('buildWeb', JavaExec) {
+	group = 'web'
+	description = 'Compile the game to JS via TeaVM. Output: web/build/dist/'
+	mainClass = 'com.watabou.pixeldungeon.web.BuildTeaVM'
+	classpath = sourceSets.main.runtimeClasspath
+	jvmArgs = ['-Xmx6g']
+}
