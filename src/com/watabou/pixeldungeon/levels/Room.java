@@ -17,7 +17,6 @@
  */
 package com.watabou.pixeldungeon.levels;
 
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -42,47 +41,67 @@ public class Room extends Rect implements Graph.Node, Bundlable {
 	public int price = 1;
 	
 	public static enum Type {
-		NULL( null ),
-		STANDARD	( StandardPainter.class ),
-		ENTRANCE	( EntrancePainter.class ),
-		EXIT		( ExitPainter.class ),
-		BOSS_EXIT	( BossExitPainter.class ),
-		TUNNEL		( TunnelPainter.class ),
-		PASSAGE		( PassagePainter.class ),
-		SHOP		( ShopPainter.class ),
-		BLACKSMITH	( BlacksmithPainter.class ),
-		TREASURY	( TreasuryPainter.class ),
-		ARMORY		( ArmoryPainter.class ),
-		LIBRARY		( LibraryPainter.class ),
-		LABORATORY	( LaboratoryPainter.class ),
-		VAULT		( VaultPainter.class ),
-		TRAPS		( TrapsPainter.class ),
-		STORAGE		( StoragePainter.class ),
-		MAGIC_WELL	( MagicWellPainter.class ),
-		GARDEN		( GardenPainter.class ),
-		CRYPT		( CryptPainter.class ),
-		STATUE		( StatuePainter.class ),
-		POOL		( PoolPainter.class ),
-		RAT_KING	( RatKingPainter.class ),
-		WEAK_FLOOR	( WeakFloorPainter.class ),
-		PIT			( PitPainter.class ),
-		ALTAR		( AltarPainter.class );
-		
-		private Method paint;
-		
-		private Type( Class<? extends Painter> painter ) {
-			try {
-				paint = painter.getMethod( "paint", Level.class, Room.class );
-			} catch (Exception e) {
-				paint = null;
-			}
-		}
-		
+		NULL,
+		STANDARD,
+		ENTRANCE,
+		EXIT,
+		BOSS_EXIT,
+		TUNNEL,
+		PASSAGE,
+		SHOP,
+		BLACKSMITH,
+		TREASURY,
+		ARMORY,
+		LIBRARY,
+		LABORATORY,
+		VAULT,
+		TRAPS,
+		STORAGE,
+		MAGIC_WELL,
+		GARDEN,
+		CRYPT,
+		STATUE,
+		POOL,
+		RAT_KING,
+		WEAK_FLOOR,
+		PIT,
+		ALTAR;
+
+		// Direct dispatch instead of the original reflective Method.invoke on
+		// each painter's static paint(): TeaVM (the web backend) cannot
+		// reliably trigger a class's static initializer when its only entry
+		// point is a reflective static-method call, which broke level
+		// generation in the browser ("$callClinit is not defined"). A plain
+		// switch works on every backend and is faster everywhere.
 		public void paint( Level level, Room room ) {
-			try {
-				paint.invoke( null, level, room );
-			} catch (Exception e) {
-				PixelDungeon.reportException( e );
+			switch (this) {
+			case STANDARD:   StandardPainter.paint( level, room );   break;
+			case ENTRANCE:   EntrancePainter.paint( level, room );   break;
+			case EXIT:       ExitPainter.paint( level, room );       break;
+			case BOSS_EXIT:  BossExitPainter.paint( level, room );   break;
+			case TUNNEL:     TunnelPainter.paint( level, room );     break;
+			case PASSAGE:    PassagePainter.paint( level, room );    break;
+			case SHOP:       ShopPainter.paint( level, room );       break;
+			case BLACKSMITH: BlacksmithPainter.paint( level, room ); break;
+			case TREASURY:   TreasuryPainter.paint( level, room );   break;
+			case ARMORY:     ArmoryPainter.paint( level, room );     break;
+			case LIBRARY:    LibraryPainter.paint( level, room );    break;
+			case LABORATORY: LaboratoryPainter.paint( level, room ); break;
+			case VAULT:      VaultPainter.paint( level, room );      break;
+			case TRAPS:      TrapsPainter.paint( level, room );      break;
+			case STORAGE:    StoragePainter.paint( level, room );    break;
+			case MAGIC_WELL: MagicWellPainter.paint( level, room );  break;
+			case GARDEN:     GardenPainter.paint( level, room );     break;
+			case CRYPT:      CryptPainter.paint( level, room );      break;
+			case STATUE:     StatuePainter.paint( level, room );     break;
+			case POOL:       PoolPainter.paint( level, room );       break;
+			case RAT_KING:   RatKingPainter.paint( level, room );    break;
+			case WEAK_FLOOR: WeakFloorPainter.paint( level, room );  break;
+			case PIT:        PitPainter.paint( level, room );        break;
+			case ALTAR:      AltarPainter.paint( level, room );      break;
+			default:
+				// NULL and any future type without a painter
+				break;
 			}
 		}
 	};
