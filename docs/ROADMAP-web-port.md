@@ -92,5 +92,13 @@ sous notre contrôle.
       DesktopPlatformSupport minimal. `gradle :desktop:installDist` produit
       un binaire lancable. Reste a tester sur une machine avec ecran
       (cette sandbox est headless).
-- [ ] W5 web
-- [ ] W6 déploiement
+- [x] W5 web : module :web sur gdx-teavm 1.2.0. `./gradlew :web:buildWeb`
+      produit web/build/dist/webapp/ (app.js 16 MB + 130 assets). Verifie
+      en Chromium headless : title screen, hero select, intro, texte OK.
+      Fixes en route : DeviceCompat via Gdx.app.getType() (TeaVM n'expose
+      pas SharedLibraryLoader.os), logException defensif (printStackTrace
+      TeaVM crashait et masquait l'erreur reelle), WebLauncher initialise
+      FileUtils sur FileType.Local (browser storage).
+- [~] W6 deploiement : workflow GitHub Actions deploy-web.yml ajoute
+      (build TeaVM + deploy GitHub Pages sur push master). Reste : activer
+      Pages dans les settings du repo (Source: GitHub Actions) et merger.

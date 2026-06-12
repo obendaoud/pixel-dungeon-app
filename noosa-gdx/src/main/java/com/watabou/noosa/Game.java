@@ -296,11 +296,33 @@ public class Game implements ApplicationListener {
 	}
 	
 	protected void logException( Throwable tr ){
-		StringWriter sw = new StringWriter();
-		PrintWriter pw = new PrintWriter(sw);
-		tr.printStackTrace(pw);
-		pw.flush();
-		Gdx.app.error("GAME", sw.toString());
+		// TeaVM's Throwable.printStackTrace (and even getMessage) can throw
+		// in the browser, masking the original error. Emit each piece of
+		// information in its own log call so whatever fails, the exception
+		// class name has already reached the console.
+		Throwable t = tr;
+		int depth = 0;
+		while (t != null && depth < 8) {
+			Gdx.app.error("GAME", (depth == 0 ? "exception: " : "caused by: ") + t.getClass().getName());
+			try {
+				String m = t.getMessage();
+				if (m != null) {
+					Gdx.app.error("GAME", "message: " + m);
+				}
+			} catch (Throwable ignored) { }
+			try {
+				StackTraceElement[] trace = t.getStackTrace();
+				if (trace != null) {
+					for (StackTraceElement e : trace) {
+						if (e != null) {
+							Gdx.app.error("GAME", "  at " + e.toString());
+						}
+					}
+				}
+			} catch (Throwable ignored) { }
+			t = t.getCause();
+			depth++;
+		}
 	}
 	
 	public static void runOnRenderThread(Callback c){

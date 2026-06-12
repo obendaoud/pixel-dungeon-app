@@ -17,9 +17,11 @@
  */
 package com.watabou.pixeldungeon.web;
 
+import com.badlogic.gdx.Files;
 import com.github.xpenatan.gdx.backends.teavm.TeaApplication;
 import com.github.xpenatan.gdx.backends.teavm.TeaApplicationConfiguration;
 import com.watabou.pixeldungeon.PixelDungeon;
+import com.watabou.utils.FileUtils;
 
 /** Browser entry point. Invoked by the bundled index.html. */
 public class WebLauncher {
@@ -31,6 +33,10 @@ public class WebLauncher {
 		config.showDownloadLogs = true;
 		config.useGL30 = false;
 		config.storagePrefix = "pixel-dungeon-100";
+
+		// Saves / badges / rankings live in browser storage, which gdx-teavm
+		// maps to the Local file type.
+		FileUtils.setDefaultFileProperties( Files.FileType.Local, "" );
 
 		new TeaApplication( new PixelDungeon( new WebPlatformSupport() ), config );
 	}
