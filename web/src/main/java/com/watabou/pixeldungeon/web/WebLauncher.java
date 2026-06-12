@@ -27,6 +27,41 @@ import com.watabou.utils.FileUtils;
 public class WebLauncher {
 
 	public static void main( String[] args ) {
+
+		// TeaVM's default uncaught-exception handler calls printStackTrace
+		// on the throwable, and the stdlib StringBuilder.append path can
+		// itself NPE on null-valued stack frames or messages, producing the
+		// confusing "Cannot read properties of undefined (reading '$toString')"
+		// that masks the actual error. Install a defensive handler before
+		// any other code so root causes always surface.
+		Thread.setDefaultUncaughtExceptionHandler( ( t, e ) -> {
+			Throwable cur = e;
+			int depth = 0;
+			while (cur != null && depth < 8) {
+				String prefix = depth == 0 ? "UNCAUGHT" : "  caused by";
+				try {
+					System.err.println( prefix + ": " + cur.getClass().getName() );
+				} catch (Throwable ignored) { }
+				try {
+					String m = cur.getMessage();
+					if (m != null) System.err.println( "  message: " + m );
+				} catch (Throwable ignored) { }
+				try {
+					StackTraceElement[] st = cur.getStackTrace();
+					if (st != null) {
+						for (StackTraceElement el : st) {
+							if (el != null) {
+								try { System.err.println( "    at " + el.toString() ); }
+								catch (Throwable ignored) { }
+							}
+						}
+					}
+				} catch (Throwable ignored) { }
+				cur = cur.getCause();
+				depth++;
+			}
+		} );
+
 		TeaApplicationConfiguration config = new TeaApplicationConfiguration( "canvas" );
 		config.width = 0;
 		config.height = 0;
