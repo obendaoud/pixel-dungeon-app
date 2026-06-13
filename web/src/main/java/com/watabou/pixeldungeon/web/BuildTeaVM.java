@@ -68,5 +68,38 @@ public class BuildTeaVM {
 		tool.setMainClass( WebLauncher.class.getName() );
 
 		TeaBuilder.build( tool );
+
+		injectCsp( new File( "build/dist/webapp/index.html" ) );
+	}
+
+	/**
+	 * Adds a permissive Content-Security-Policy meta to the generated
+	 * index.html. TeaVM's JS/WASM bridge needs eval / wasm-unsafe-eval; some
+	 * browser environments (privacy extensions, corporate proxies) inject a
+	 * restrictive CSP that blocks it and stalls the app. An explicit meta in
+	 * our own page takes precedence and makes the bundle portable. This is a
+	 * single-player game with no user-supplied content, so unsafe-eval carries
+	 * no injection risk here.
+	 */
+	private static void injectCsp( File indexHtml ) {
+		try {
+			if (!indexHtml.exists()) return;
+			byte[] raw = java.nio.file.Files.readAllBytes( indexHtml.toPath() );
+			String html = new String( raw, java.nio.charset.StandardCharsets.UTF_8 );
+			if (html.contains( "Content-Security-Policy" )) return;
+			String meta = "<meta http-equiv=\"Content-Security-Policy\" "
+					+ "content=\"default-src 'self' data: blob:; "
+					+ "script-src 'self' 'unsafe-eval' 'wasm-unsafe-eval' 'unsafe-inline' blob:; "
+					+ "style-src 'self' 'unsafe-inline'; "
+					+ "img-src 'self' data: blob:; "
+					+ "media-src 'self' data: blob:; "
+					+ "connect-src 'self' data: blob:;\">";
+			html = html.replaceFirst( "<head>", "<head>\n    " + meta );
+			java.nio.file.Files.write( indexHtml.toPath(),
+					html.getBytes( java.nio.charset.StandardCharsets.UTF_8 ) );
+			System.out.println( "Injected permissive CSP meta into index.html" );
+		} catch (Exception e) {
+			System.err.println( "Could not inject CSP meta: " + e.getMessage() );
+		}
 	}
 }
