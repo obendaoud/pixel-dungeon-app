@@ -69,37 +69,99 @@ public class BuildTeaVM {
 
 		TeaBuilder.build( tool );
 
-		injectCsp( new File( "build/dist/webapp/index.html" ) );
+		rewriteWebapp( new File( "build/dist/webapp" ) );
 	}
 
 	/**
-	 * Adds a permissive Content-Security-Policy meta to the generated
-	 * index.html. TeaVM's JS/WASM bridge needs eval / wasm-unsafe-eval; some
-	 * browser environments (privacy extensions, corporate proxies) inject a
-	 * restrictive CSP that blocks it and stalls the app. An explicit meta in
-	 * our own page takes precedence and makes the bundle portable. This is a
-	 * single-player game with no user-supplied content, so unsafe-eval carries
-	 * no injection risk here.
+	 * Rewrites the gdx-teavm generated index.html into a CSP-clean page.
+	 *
+	 * The generated page bootstraps the game with an inline {@code <script>},
+	 * inline {@code <style>}, and inline {@code onload}/{@code oncontextmenu}
+	 * handlers. Any externally-imposed Content-Security-Policy (privacy
+	 * extension, corporate proxy, GitHub Pages / itch.io defaults) with
+	 * {@code script-src 'self'} blocks all of those, so the game never boots
+	 * (broken loading logo, white/black screen). A page-level meta cannot
+	 * loosen an externally-supplied CSP.
+	 *
+	 * We therefore externalise everything: the inline style block goes to
+	 * style.css, the inline bootstrap goes to bootstrap.js (with the event
+	 * handlers attached via addEventListener), and the page itself becomes
+	 * fully static. The only remaining requirement is 'wasm-unsafe-eval' for
+	 * the libGDX WASM image-decoding module, which virtually every restrictive
+	 * CSP still allows. A self meta is also written for the common case where
+	 * no external CSP is present.
 	 */
-	private static void injectCsp( File indexHtml ) {
+	private static void rewriteWebapp( File webapp ) {
 		try {
+			File indexHtml = new File( webapp, "index.html" );
 			if (!indexHtml.exists()) return;
-			byte[] raw = java.nio.file.Files.readAllBytes( indexHtml.toPath() );
-			String html = new String( raw, java.nio.charset.StandardCharsets.UTF_8 );
-			if (html.contains( "Content-Security-Policy" )) return;
-			String meta = "<meta http-equiv=\"Content-Security-Policy\" "
-					+ "content=\"default-src 'self' data: blob:; "
-					+ "script-src 'self' 'unsafe-eval' 'wasm-unsafe-eval' 'unsafe-inline' blob:; "
-					+ "style-src 'self' 'unsafe-inline'; "
-					+ "img-src 'self' data: blob:; "
-					+ "media-src 'self' data: blob:; "
-					+ "connect-src 'self' data: blob:;\">";
-			html = html.replaceFirst( "<head>", "<head>\n    " + meta );
+
+			String html = new String(
+					java.nio.file.Files.readAllBytes( indexHtml.toPath() ),
+					java.nio.charset.StandardCharsets.UTF_8 );
+
+			// Extract the generated inline <style> block into style.css.
+			String css = "";
+			int styleStart = html.indexOf( "<style>" );
+			int styleEnd = html.indexOf( "</style>" );
+			if (styleStart >= 0 && styleEnd > styleStart) {
+				css = html.substring( styleStart + "<style>".length(), styleEnd );
+			}
+			java.nio.file.Files.write( new File( webapp, "style.css" ).toPath(),
+					css.getBytes( java.nio.charset.StandardCharsets.UTF_8 ) );
+
+			// External bootstrap: progress bar + game start, no inline handlers.
+			String bootstrap =
+					"(function () {\n" +
+					"  document.addEventListener('contextmenu', function (e) { e.preventDefault(); });\n" +
+					"  var maxPercentage = 25, delay = 500;\n" +
+					"  var bar = document.getElementById('progress-bar');\n" +
+					"  function barUpdater() {\n" +
+					"    if (!bar) return;\n" +
+					"    var p = parseInt(bar.style.width, 10) || 0;\n" +
+					"    if (p < maxPercentage) { bar.style.width = (p + 1) + '%'; delay += 25; setTimeout(barUpdater, delay); }\n" +
+					"  }\n" +
+					"  if (bar) { bar.style.width = '0%'; setTimeout(barUpdater, delay); }\n" +
+					"  window.addEventListener('load', function () { if (typeof main === 'function') { main(); } });\n" +
+					"})();\n";
+			java.nio.file.Files.write( new File( webapp, "bootstrap.js" ).toPath(),
+					bootstrap.getBytes( java.nio.charset.StandardCharsets.UTF_8 ) );
+
+			// Fully static, CSP-clean index.html.
+			String page =
+					"<!DOCTYPE html>\n" +
+					"<html>\n" +
+					"<head>\n" +
+					"    <title>Pixel Dungeon: 100 Floors</title>\n" +
+					"    <meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\">\n" +
+					"    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, user-scalable=no\">\n" +
+					"    <meta http-equiv=\"Content-Security-Policy\" content=\"" +
+					"default-src 'self' data: blob:; " +
+					"script-src 'self' 'wasm-unsafe-eval'; " +
+					"style-src 'self'; " +
+					"img-src 'self' data: blob:; " +
+					"media-src 'self' data: blob:; " +
+					"connect-src 'self' data: blob:;\">\n" +
+					"    <link rel=\"stylesheet\" href=\"style.css\">\n" +
+					"</head>\n" +
+					"<body>\n" +
+					"<div>\n" +
+					"    <div id=\"progress\">\n" +
+					"        <img id=\"progress-img\" src=\"startup-logo.png\" alt=\"loading\">\n" +
+					"        <div id=\"progress-box\"><div id=\"progress-bar\"></div></div>\n" +
+					"    </div>\n" +
+					"    <canvas id=\"canvas\" width=\"960\" height=\"640\"></canvas>\n" +
+					"</div>\n" +
+					"<script type=\"text/javascript\" charset=\"utf-8\" src=\"teavm/app.js\"></script>\n" +
+					"<script type=\"text/javascript\" charset=\"utf-8\" src=\"bootstrap.js\"></script>\n" +
+					"</body>\n" +
+					"</html>\n";
 			java.nio.file.Files.write( indexHtml.toPath(),
-					html.getBytes( java.nio.charset.StandardCharsets.UTF_8 ) );
-			System.out.println( "Injected permissive CSP meta into index.html" );
+					page.getBytes( java.nio.charset.StandardCharsets.UTF_8 ) );
+
+			System.out.println( "Rewrote index.html CSP-clean (external style.css + bootstrap.js)" );
 		} catch (Exception e) {
-			System.err.println( "Could not inject CSP meta: " + e.getMessage() );
+			System.err.println( "Could not rewrite webapp index.html: " + e.getMessage() );
 		}
 	}
 }
