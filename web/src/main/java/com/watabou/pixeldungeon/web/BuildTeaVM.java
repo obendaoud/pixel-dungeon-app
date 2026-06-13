@@ -47,7 +47,7 @@ public class BuildTeaVM {
 		cfg.assetsPath.add( new AssetFileHandle( "../assets" ) );
 		cfg.webappPath = new File( "build/dist" ).getCanonicalPath();
 		cfg.mainClass = WebLauncher.class.getName();
-		cfg.htmlTitle = "Pixel Dungeon: 100 Floors";
+		cfg.htmlTitle = "Pixel Dungeon Rebirth";
 		cfg.htmlWidth = 960;
 		cfg.htmlHeight = 640;
 
@@ -132,7 +132,7 @@ public class BuildTeaVM {
 					"<!DOCTYPE html>\n" +
 					"<html>\n" +
 					"<head>\n" +
-					"    <title>Pixel Dungeon: 100 Floors</title>\n" +
+					"    <title>Pixel Dungeon Rebirth</title>\n" +
 					"    <meta http-equiv=\"Content-Type\" content=\"text/html;charset=utf-8\">\n" +
 					"    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, user-scalable=no\">\n" +
 					"    <meta http-equiv=\"Content-Security-Policy\" content=\"" +

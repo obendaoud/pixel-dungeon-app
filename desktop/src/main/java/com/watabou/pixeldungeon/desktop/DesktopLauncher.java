@@ -28,7 +28,7 @@ public class DesktopLauncher {
 	public static void main( String[] args ) {
 
 		Lwjgl3ApplicationConfiguration config = new Lwjgl3ApplicationConfiguration();
-		config.setTitle( "Pixel Dungeon: 100 Floors" );
+		config.setTitle( "Pixel Dungeon Rebirth" );
 		config.setWindowedMode( 960, 640 );
 
 		FileUtils.setDefaultFileProperties( Files.FileType.External, ".pixel-dungeon/" );
