@@ -17,7 +17,7 @@
  */
 package com.watabou.pixeldungeon.sprites;
 
-import android.graphics.Bitmap;
+import com.badlogic.gdx.graphics.Pixmap;
 
 import com.watabou.gltextures.TextureCache;
 import com.watabou.noosa.Game;
@@ -202,11 +202,13 @@ public class ItemSprite extends MovieClip {
 	}
 	
 	public static int pick( int index, int x, int y ) {
-		Bitmap bmp = TextureCache.get( Assets.ITEMS ).bitmap;
+		Pixmap bmp = TextureCache.get( Assets.ITEMS ).bitmap;
 		int rows = bmp.getWidth() / SIZE;
 		int row = index / rows;
 		int col = index % rows;
-		return bmp.getPixel( col * SIZE + x, row * SIZE + y );
+		// Pixmap returns RGBA; callers expect ARGB
+		int rgba = bmp.getPixel( col * SIZE + x, row * SIZE + y );
+		return (rgba >>> 8) | (rgba << 24);
 	}
 	
 	public static class Glowing {

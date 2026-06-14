@@ -1,0 +1,12 @@
+// Game logic, compiled against the vendored noosa-gdx (libGDX backend).
+// Zero android.* imports remain (W3 done); do not add new ones.
+
+sourceSets {
+	main {
+		java.srcDirs = ['../src']
+	}
+}
+
+dependencies {
+	implementation project(':noosa-gdx')
+}

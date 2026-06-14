@@ -283,8 +283,8 @@ public abstract class Level implements Bundlable {
 		bundle.put( MAPPED, mapped );
 		bundle.put( ENTRANCE, entrance );
 		bundle.put( EXIT, exit );
-		bundle.put( HEAPS, heaps.values() );
-		bundle.put( PLANTS, plants.values() );
+		bundle.put( HEAPS, heaps.valueList() );
+		bundle.put( PLANTS, plants.valueList() );
 		bundle.put( MOBS, mobs );
 		bundle.put( BLOBS, blobs.values() );
 	}
@@ -612,7 +612,7 @@ public abstract class Level implements Bundlable {
 	}
 	
 	public void uproot( int pos ) {
-		plants.delete( pos );
+		plants.remove( pos );
 	}
 	
 	public int pitCell() {

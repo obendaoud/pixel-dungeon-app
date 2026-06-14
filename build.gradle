@@ -1,0 +1,26 @@
+// Root build for the multi-module layout (see settings.gradle and
+// docs/ROADMAP-web-port.md).
+//
+// Usage:
+//   ./tools/fetch-deps.sh        # once, populates libs/
+//   gradle :core:compileJava     # compiles the whole game logic
+//
+// Java-only verification for now; no APK / web bundle is produced yet.
+
+subprojects {
+	apply plugin: 'java'
+
+	repositories {
+		mavenCentral()
+	}
+
+	java {
+		sourceCompatibility = JavaVersion.VERSION_1_8
+		targetCompatibility = JavaVersion.VERSION_1_8
+	}
+
+	tasks.withType(JavaCompile).configureEach {
+		options.encoding = 'UTF-8'
+		options.compilerArgs << '-Xlint:-options' << '-Xmaxerrs' << '3000'
+	}
+}

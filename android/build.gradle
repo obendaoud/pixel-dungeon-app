@@ -1,0 +1,8 @@
+// Legacy Android backend. Shell module.
+//
+// The Android pieces (AndroidManifest.xml, res/, assets/ at the repo root,
+// and the Activity entry point currently living in :core as
+// PixelDungeon.java) will be wired here in W3, once the launcher is
+// extracted from the game logic. Building an APK additionally requires the
+// Android Gradle Plugin and an SDK, which are intentionally not configured
+// yet.

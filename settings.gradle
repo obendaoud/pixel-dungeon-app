@@ -1,0 +1,16 @@
+// 100-floors Pixel Dungeon — multi-module layout (web port W1).
+//
+//   :core    - game logic (all of src/ for now). Still has a compileOnly
+//              dependency on android.jar; W3 of docs/ROADMAP-web-port.md
+//              burns that down to zero android.* imports.
+//   :android - legacy Android backend (AndroidManifest, res/, assets/).
+//              Shell until W3 moves the launcher out of :core.
+//   :desktop - LWJGL3 backend (W4). Shell.
+//   :web     - gdx-teavm browser backend (W5). Shell.
+rootProject.name = 'pixel-dungeon'
+
+include 'core'
+include 'noosa-gdx'
+include 'android'
+include 'desktop'
+include 'web'

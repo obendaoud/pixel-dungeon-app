@@ -17,7 +17,7 @@
  */
 package com.watabou.pixeldungeon.sprites;
 
-import android.graphics.RectF;
+import com.watabou.utils.RectF;
 
 import com.watabou.gltextures.SmartTexture;
 import com.watabou.gltextures.TextureCache;
@@ -84,7 +84,7 @@ public class HeroSprite extends CharSprite {
 	@Override
 	public void place( int p ) {
 		super.place( p );
-		Camera.main.target = this;
+		Camera.main.panFollow( this, 1f );
 	}
 
 	@Override
@@ -93,7 +93,7 @@ public class HeroSprite extends CharSprite {
 		if (ch.flying) {
 			play( fly );
 		}
-		Camera.main.target = this;
+		Camera.main.panFollow( this, 1f );
 	}
 	
 	@Override
@@ -139,7 +139,7 @@ public class HeroSprite extends CharSprite {
 		RectF patch = tiers().get( armorTier );
 		Image avatar = new Image( cl.spritesheet() );
 		RectF frame = avatar.texture.uvRect( 1, 0, FRAME_WIDTH, FRAME_HEIGHT );
-		frame.offset( patch.left, patch.top );
+		frame.shift( patch.left, patch.top );
 		avatar.frame( frame );
 		
 		return avatar;

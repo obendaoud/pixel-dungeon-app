@@ -46,6 +46,7 @@ import com.watabou.pixeldungeon.items.wands.Wand;
 import com.watabou.pixeldungeon.scenes.PixelScene;
 import com.watabou.pixeldungeon.utils.GLog;
 import com.watabou.utils.Bundle;
+import com.watabou.utils.FileUtils;
 import com.watabou.utils.Callback;
 
 public class Badges {
@@ -215,9 +216,7 @@ public class Badges {
 	public static void loadGlobal() {
 		if (global == null) {
 			try {
-				InputStream input = Game.instance.openFileInput( BADGES_FILE );
-				Bundle bundle = Bundle.read( input );
-				input.close();
+				Bundle bundle = FileUtils.bundleFromFile( BADGES_FILE );
 				
 				global = restore( bundle );
 				
@@ -237,9 +236,7 @@ public class Badges {
 			store( bundle, global );
 			
 			try {
-				OutputStream output = Game.instance.openFileOutput( BADGES_FILE, Game.MODE_PRIVATE );
-				Bundle.write( bundle, output );
-				output.close();
+				FileUtils.bundleToFile( BADGES_FILE, bundle );
 				saveNeeded = false;
 			} catch (IOException e) {
 				

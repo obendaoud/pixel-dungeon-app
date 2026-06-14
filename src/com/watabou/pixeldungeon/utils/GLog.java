@@ -17,9 +17,8 @@
  */
 package com.watabou.pixeldungeon.utils;
 
+import com.watabou.utils.DeviceCompat;
 import com.watabou.utils.Signal;
-
-import android.util.Log;
 
 public class GLog {
 
@@ -38,7 +37,7 @@ public class GLog {
 			text = Utils.format( text, args );
 		}
 		
-		Log.i( TAG, text );
+		DeviceCompat.log( TAG, text );
 		update.dispatch( text );
 	}
 	

@@ -19,7 +19,7 @@ package com.watabou.pixeldungeon;
 
 import java.util.Arrays;
 
-import android.graphics.Bitmap;
+import com.badlogic.gdx.graphics.Pixmap;
 
 import com.watabou.gltextures.SmartTexture;
 import com.watabou.gltextures.TextureCache;
@@ -107,7 +107,7 @@ public class FogOfWar extends Image {
 	private class FogTexture extends SmartTexture {
 		
 		public FogTexture() {
-			super( Bitmap.createBitmap( width2, height2, Bitmap.Config.ARGB_8888 ) );
+			super( new Pixmap( width2, height2, Pixmap.Format.RGBA8888 ) );
 			filter( Texture.LINEAR, Texture.LINEAR );
 			TextureCache.add( FogOfWar.class, this );
 		}

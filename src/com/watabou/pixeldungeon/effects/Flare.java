@@ -22,12 +22,9 @@ import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
 
-import javax.microedition.khronos.opengles.GL10;
 
-import android.annotation.SuppressLint;
-import android.opengl.GLES20;
-import android.util.FloatMath;
 
+import com.watabou.glwrap.Blending;
 import com.watabou.gltextures.Gradient;
 import com.watabou.gltextures.SmartTexture;
 import com.watabou.noosa.Game;
@@ -50,7 +47,6 @@ public class Flare extends Visual {
 	
 	private int nRays;
 	
-	@SuppressLint("FloatMath")
 	public Flare( int nRays, float radius ) {
 		
 		super( 0, 0, 0, 0 );
@@ -87,13 +83,13 @@ public class Flare extends Visual {
 		for (int i=0; i < nRays; i++) {
 			
 			float a = i * 3.1415926f * 2 / nRays;
-			v[0] = FloatMath.cos( a ) * radius;
-			v[1] = FloatMath.sin( a ) * radius;
+			v[0] = (float)Math.cos( a ) * radius;
+			v[1] = (float)Math.sin( a ) * radius;
 			vertices.put( v );
 			
 			a += 3.1415926f * 2 / nRays / 2;
-			v[0] = FloatMath.cos( a ) * radius;
-			v[1] = FloatMath.sin( a ) * radius;
+			v[0] = (float)Math.cos( a ) * radius;
+			v[1] = (float)Math.sin( a ) * radius;
 			vertices.put( v );
 			
 			indices.put( (short)0 );
@@ -153,9 +149,9 @@ public class Flare extends Visual {
 		super.draw();
 		
 		if (lightMode) {
-			GLES20.glBlendFunc( GL10.GL_SRC_ALPHA, GL10.GL_ONE );
+			Blending.setLightMode();
 			drawRays();
-			GLES20.glBlendFunc( GL10.GL_SRC_ALPHA, GL10.GL_ONE_MINUS_SRC_ALPHA );
+			Blending.setNormalMode();
 		} else {
 			drawRays();
 		}

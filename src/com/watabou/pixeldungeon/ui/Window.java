@@ -18,8 +18,8 @@
 package com.watabou.pixeldungeon.ui;
 
 
-import com.watabou.input.Keys;
-import com.watabou.input.Keys.Key;
+import com.badlogic.gdx.Input;
+import com.watabou.input.KeyEvent;
 import com.watabou.input.Touchscreen.Touch;
 import com.watabou.noosa.Camera;
 import com.watabou.noosa.Game;
@@ -31,7 +31,7 @@ import com.watabou.pixeldungeon.effects.ShadowBox;
 import com.watabou.pixeldungeon.scenes.PixelScene;
 import com.watabou.utils.Signal;
 
-public class Window extends Group implements Signal.Listener<Key> {
+public class Window extends Group implements Signal.Listener<KeyEvent> {
 
 	protected int width;
 	protected int height;
@@ -99,7 +99,7 @@ public class Window extends Group implements Signal.Listener<Key> {
 			camera.y / camera.zoom, 
 			chrome.width(), chrome.height );
 		
-		Keys.event.add( this );
+		KeyEvent.addKeyListener( this );
 	}
 	
 	public void resize( int w, int h ) {
@@ -127,23 +127,24 @@ public class Window extends Group implements Signal.Listener<Key> {
 		super.destroy();
 		
 		Camera.remove( camera );
-		Keys.event.remove( this );
+		KeyEvent.removeKeyListener( this );
 	}
 
 	@Override
-	public void onSignal( Key key ) {
+	public boolean onSignal( KeyEvent key ) {
 		if (key.pressed) {
 			switch (key.code) {
-			case Keys.BACK:
-				onBackPressed();			
+			case Input.Keys.BACK:
+			case Input.Keys.ESCAPE:
+				onBackPressed();
 				break;
-			case Keys.MENU:
-				onMenuPressed();			
+			case Input.Keys.MENU:
+				onMenuPressed();
 				break;
 			}
 		}
-		
-		Keys.event.cancel();
+
+		return true;
 	}
 	
 	public void onBackPressed() {

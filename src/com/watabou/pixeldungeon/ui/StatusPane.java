@@ -76,7 +76,7 @@ public class StatusPane extends Component {
 			protected void onClick( Touch touch ) {
 				Image sprite = Dungeon.hero.sprite;
 				if (!sprite.isVisible()) {
-					Camera.main.focusOn( sprite );
+					Camera.main.panFollow( sprite, 1f );
 				}
 				GameScene.show( new WndHero() );
 			};			

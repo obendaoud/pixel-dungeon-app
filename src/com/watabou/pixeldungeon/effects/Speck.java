@@ -17,9 +17,7 @@
  */
 package com.watabou.pixeldungeon.effects;
 
-import android.annotation.SuppressLint;
-import android.util.FloatMath;
-import android.util.SparseArray;
+import com.watabou.utils.SparseArray;
 
 import com.watabou.noosa.Game;
 import com.watabou.noosa.Image;
@@ -299,7 +297,6 @@ public class Speck extends Image {
 		left = lifespan;
 	}
 	
-	@SuppressLint("FloatMath")
 	@Override
 	public void update() {
 		super.update();
@@ -372,9 +369,9 @@ public class Speck extends Image {
 				break;
 				
 			case CHANGE:
-				am = (float)FloatMath.sqrt( (p < 0.5f ? p : 1 - p) * 2);
+				am = (float)Math.sqrt( (p < 0.5f ? p : 1 - p) * 2);
 				scale.y = (1 + p) * 0.5f;
-				scale.x = scale.y * FloatMath.cos( left * 15 );
+				scale.x = scale.y * (float)Math.cos( left * 15 );
 				break;
 				
 			case HEART:
@@ -401,7 +398,7 @@ public class Speck extends Image {
 				break;
 				
 			case COIN:
-				scale.x = FloatMath.cos( left * 5 );
+				scale.x = (float)Math.cos( left * 5 );
 				rm = gm = bm = (Math.abs( scale.x ) + 1) * 0.5f;
 				am = p < 0.9f ? 1 : (1 - p) * 10;
 				break;

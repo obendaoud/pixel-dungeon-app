@@ -20,7 +20,7 @@ package com.watabou.pixeldungeon.actors;
 import java.util.Arrays;
 import java.util.HashSet;
 
-import android.util.SparseArray;
+import com.watabou.utils.SparseArray;
 
 import com.watabou.pixeldungeon.Dungeon;
 import com.watabou.pixeldungeon.Statistics;

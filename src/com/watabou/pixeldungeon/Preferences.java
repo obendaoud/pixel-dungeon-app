@@ -17,9 +17,7 @@
  */
 package com.watabou.pixeldungeon;
 
-import com.watabou.noosa.Game;
-
-import android.content.SharedPreferences;
+import com.watabou.utils.GameSettings;
 
 enum Preferences {
 
@@ -38,36 +36,27 @@ enum Preferences {
 	public static final String KEY_INTRO		= "intro";
 	public static final String KEY_BRIGHTNESS	= "brightness";
 	
-	private SharedPreferences prefs;
-	
-	private SharedPreferences get() {
-		if (prefs == null) {
-			prefs = Game.instance.getPreferences( Game.MODE_PRIVATE );
-		}
-		return prefs;
-	}
-	
 	int getInt( String key, int defValue  ) {
-		return get().getInt( key, defValue );
+		return GameSettings.getInt( key, defValue );
 	}
 	
 	boolean getBoolean( String key, boolean defValue  ) {
-		return get().getBoolean( key, defValue );
+		return GameSettings.getBoolean( key, defValue );
 	}
 	
 	String getString( String key, String defValue  ) {
-		return get().getString( key, defValue );
+		return GameSettings.getString( key, defValue );
 	}
 	
 	void put( String key, int value ) {
-		get().edit().putInt( key, value ).commit();
+		GameSettings.put( key, value );
 	}
 	
 	void put( String key, boolean value ) {
-		get().edit().putBoolean( key, value ).commit();
+		GameSettings.put( key, value );
 	}
 	
 	void put( String key, String value ) {
-		get().edit().putString( key, value ).commit();
+		GameSettings.put( key, value );
 	}
 }
