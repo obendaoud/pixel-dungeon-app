@@ -537,6 +537,16 @@ public class Bundle {
 	}
 
 	public static boolean write( Bundle bundle, OutputStream stream, boolean compressed ) {
+		// TeaVM's java.util.zip.Deflater rethrows zlib's benign Z_BUF_ERROR (-5)
+		// as a fatal RuntimeException from GZIPOutputStream.flush() (which
+		// OutputStreamWriter.close() triggers), crashing every save in the
+		// browser. We can't patch TeaVM's classlib, so write plain JSON on web.
+		// read() sniffs the GZIP magic header (0x1f8b) and so still loads either
+		// format, which also keeps us off TeaVM's matching Inflater on load.
+		// Desktop/Android keep gzip compression.
+		if (compressed && DeviceCompat.isWeb()) {
+			compressed = false;
+		}
 		try {
 			BufferedWriter writer;
 			if (compressed) writer = new BufferedWriter( new OutputStreamWriter( new GZIPOutputStream(stream, GZIP_BUFFER ) ) );
